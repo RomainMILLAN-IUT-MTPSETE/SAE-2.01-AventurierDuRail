@@ -233,11 +233,14 @@ public class Joueur {
      * @return liste des destinations qui n'ont pas été gardées par le joueur
      */
     public List<Destination> choisirDestinations(List<Destination> destinationsPossibles, int n) {
-        List<Destination> resultatCardToDefausser = null;
+        List<Destination> resultatCardToDefausser = new ArrayList<>();
         int defausser = 0;
         boolean passe = false;
         while(defausser < n && passe == false){
-            List<String> boutons = Arrays.asList(destinationsPossibles.get(0).getNom(), destinationsPossibles.get(1).getNom(), destinationsPossibles.get(2).getNom(), destinationsPossibles.get(3).getNom());
+            List<String> boutons = new ArrayList<>();
+            for(int j=0; j<destinationsPossibles.size(); j++){
+                boutons.add(destinationsPossibles.get(j).getNom());
+            }
             String input = choisir("Choisissez une carte à défausser.", new ArrayList<>(), boutons, true);
 
             if(input.equals("")){
@@ -246,11 +249,15 @@ public class Joueur {
             }else {
                 //Le joueur défausse une carte
                 defausser++;
-                for(int i=0; i<destinationsPossibles.size(); i++){
+                int i=0;
+                boolean find = false;
+                while(i<destinationsPossibles.size() && find == false){
                     if(destinationsPossibles.get(i).getNom().equals(input)){
+                        find = true;
                         resultatCardToDefausser.add(destinationsPossibles.get(i));
                         destinationsPossibles.remove(i);
                     }
+                    i++;
                 }
             }
 

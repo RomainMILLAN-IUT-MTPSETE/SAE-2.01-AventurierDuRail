@@ -51,7 +51,6 @@ public class Jeu implements Runnable {
      * Messages d'information du jeu
      */
     private List<String> log;
-
     /**
      * Pile destination long
      */
@@ -136,7 +135,8 @@ public class Jeu implements Runnable {
          */
 
         /**
-         * Code Perso*/
+         * PERSONNEL
+         */
         for(int i=0; i<joueurs.size(); i++){
             ArrayList<Destination> destinationPlayer = new ArrayList<>();
             destinationPlayer.add(this.getRandomLongDestinationCard());
@@ -147,7 +147,14 @@ public class Jeu implements Runnable {
                 destinationPlayer.add(destinationToCopieCardNormal.get(j));
             }
 
-            List<Destination> aDefausser = joueurs.get(i).choisirDestinations(destinationPlayer, 2);
+            System.out.println(joueurs.get(i).getNom());
+            List<Destination> aRemettreDansLeJeu = joueurs.get(i).choisirDestinations(destinationPlayer, 2);
+            for(int x=0; x<aRemettreDansLeJeu.size(); x++){
+                if(aRemettreDansLeJeu.get(x).getValeur() < 14){
+                    //Destination Courte donc on remet dans le jeu
+                    this.pileDestinations.add(aRemettreDansLeJeu.get(x));
+                }
+            }
 
         }
 
@@ -336,6 +343,7 @@ public class Jeu implements Runnable {
 
         //Puis on la get dans la liste
         resultat = this.longDestinationList.get(randomNumber);
+        this.longDestinationList.remove(randomNumber);
 
         //Et enfin on la retourne.
         return resultat;
@@ -343,20 +351,14 @@ public class Jeu implements Runnable {
 
     public ArrayList<Destination> getRandomDestinationCard(int numberCardToGet){
         ArrayList<Destination> resultat = new ArrayList<>();
-        ArrayList<Destination> destinationToChose = new ArrayList<>();
-
-        //On copie dans la nouvele arraylist
-        for(int i=0; i<this.pileDestinations.size(); i++){
-            destinationToChose.add(this.pileDestinations.get(i));
-        }
 
         //Puis on pioche dedans
         for(int i=0; i<numberCardToGet; i++){
             Random rand = new Random();
-            int randomNumber = rand.nextInt(destinationToChose.size());
+            int randomNumber = rand.nextInt(this.pileDestinations.size());
 
-            resultat.add(destinationToChose.get(randomNumber));
-            destinationToChose.remove(randomNumber);
+            resultat.add(this.pileDestinations.get(randomNumber));
+            this.pileDestinations.remove(randomNumber);
         }
 
         return resultat;
