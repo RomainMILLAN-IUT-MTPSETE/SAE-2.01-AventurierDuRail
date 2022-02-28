@@ -120,3 +120,6 @@ build/
 
 # Mac OS metafiles
 .DS_Store
+
+# Code test perso
+App.java

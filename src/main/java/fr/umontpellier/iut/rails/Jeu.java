@@ -13,7 +13,6 @@ public class Jeu implements Runnable {
      * Liste des joueurs
      */
     private List<Joueur> joueurs;
-
     /**
      * Le joueur dont c'est le tour
      */
@@ -53,6 +52,11 @@ public class Jeu implements Runnable {
      */
     private List<String> log;
 
+    /**
+     * Pile destination long
+     */
+    private List<Destination> longDestinationList;
+
     public Jeu(String[] nomJoueurs) {
         /*
          * ATTENTION : Cette méthode est à réécrire.
@@ -87,6 +91,9 @@ public class Jeu implements Runnable {
         Plateau plateau = Plateau.makePlateauEurope();
         villes = plateau.getVilles();
         routes = plateau.getRoutes();
+        //PERSO
+        this.longDestinationList = Destination.makeDestinationsLonguesEurope();
+        this.pileDestinations = Destination.makeDestinationsEurope();
     }
 
     public List<CouleurWagon> getPileCartesWagon() {
@@ -127,6 +134,23 @@ public class Jeu implements Runnable {
          * moins
          * - exécuter encore un dernier tour de jeu pour chaque joueur après
          */
+
+        /**
+         * Code Perso*/
+        for(int i=0; i<joueurs.size(); i++){
+            ArrayList<Destination> destinationPlayer = new ArrayList<>();
+
+            destinationPlayer.add(this.getRandomLongDestinationCard());
+
+            //On pioche au hasard 3 carte et on les mets dans la liste en cour.
+            ArrayList<Destination> destinationToCopieCardNormal = this.getRandomDestinationCard(3);
+            for(int j=0; j<destinationToCopieCardNormal.size(); j++){
+                destinationPlayer.add(destinationToCopieCardNormal.get(j));
+            }
+
+            joueurs.get(i).choisirDestinations(destinationPlayer, 2);
+        }
+
 
         /**
          * Le code proposé ici n'est qu'un exemple d'utilisation des méthodes pour
@@ -297,5 +321,44 @@ public class Jeu implements Runnable {
                         new AbstractMap.SimpleEntry<String, Object>("cartesWagonVisibles", cartesWagonVisibles))),
                 new AbstractMap.SimpleEntry<String, Object>("log", log));
         GameServer.setEtatJeu(new Gson().toJson(data));
+    }
+
+
+    /**
+     * PERSONEL
+     */
+    public Destination getRandomLongDestinationCard(){
+        Destination resultat;
+
+        //On fait un random pour avoir l'id d'une destination
+        Random rand = new Random();
+        int randomNumber = rand.nextInt(this.longDestinationList.size());
+
+        //Puis on la get dans la liste
+        resultat = this.longDestinationList.get(randomNumber);
+
+        //Et enfin on la retourne.
+        return resultat;
+    }
+
+    public ArrayList<Destination> getRandomDestinationCard(int numberCardToGet){
+        ArrayList<Destination> resultat = new ArrayList<>();
+        ArrayList<Destination> destinationToChose = new ArrayList<>();
+
+        //On copie dans la nouvele arraylist
+        for(int i=0; i<this.pileDestinations.size(); i++){
+            destinationToChose.add(this.pileDestinations.get(i));
+        }
+
+        //Puis on pioche dedans
+        for(int i=0; i<numberCardToGet; i++){
+            Random rand = new Random();
+            int randomNumber = rand.nextInt(destinationToChose.size());
+
+            resultat.add(destinationToChose.get(randomNumber));
+            destinationToChose.remove(randomNumber);
+        }
+
+        return resultat;
     }
 }

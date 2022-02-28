@@ -233,6 +233,10 @@ public class Joueur {
      * @return liste des destinations qui n'ont pas été gardées par le joueur
      */
     public List<Destination> choisirDestinations(List<Destination> destinationsPossibles, int n) {
+        List<Destination> resultat;
+
+        
+
         throw new RuntimeException("Méthode non implémentée !");
     }
 
@@ -257,5 +261,18 @@ public class Joueur {
      */
     public void jouerTour() {
         throw new RuntimeException("Méthode non implémentée !");
+    }
+
+    /**
+     * PERSONNEL
+     */
+    public void addDestinationListCardToListPlayer(List<Destination> destination){
+        for(int i=0; i<destination.size(); i++){
+            this.destinations.add(destination.get(i));
+        }
+    }
+
+    public void addDestinationCardToListPlayer(Destination destination){
+        this.destinations.add(destination);
     }
 }
