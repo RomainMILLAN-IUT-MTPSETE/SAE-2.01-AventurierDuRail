@@ -103,4 +103,11 @@ public class Destination {
         destinations.add(new Destination("Cadiz", "Stockholm", 21));
         return destinations;
     }
+
+    /**
+     * PERSONNEL
+     */
+    public int getValeur() {
+        return valeur;
+    }
 }
