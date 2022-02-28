@@ -139,7 +139,6 @@ public class Jeu implements Runnable {
          * Code Perso*/
         for(int i=0; i<joueurs.size(); i++){
             ArrayList<Destination> destinationPlayer = new ArrayList<>();
-
             destinationPlayer.add(this.getRandomLongDestinationCard());
 
             //On pioche au hasard 3 carte et on les mets dans la liste en cour.
@@ -148,7 +147,8 @@ public class Jeu implements Runnable {
                 destinationPlayer.add(destinationToCopieCardNormal.get(j));
             }
 
-            joueurs.get(i).choisirDestinations(destinationPlayer, 2);
+            List<Destination> aDefausser = joueurs.get(i).choisirDestinations(destinationPlayer, 2);
+
         }
 
 
@@ -157,7 +157,7 @@ public class Jeu implements Runnable {
          * interagir avec l'utilisateur, il n'a rien à voir avec le code de la partie et
          * doit donc être entièrement réécrit.
          */
-        
+        /**
         // Exemple d'utilisation
         while (true) {
             // le joueur doit choisir une valeur parmi "1", "2", "3", "4", "6" ou "8"
@@ -192,7 +192,7 @@ public class Jeu implements Runnable {
                 // le joueur a choisi une route
                 log("Vous avez choisi la route " + choixRoute);
             }
-        }
+        }*/
     }
 
     /**

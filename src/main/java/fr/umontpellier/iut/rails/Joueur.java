@@ -233,11 +233,32 @@ public class Joueur {
      * @return liste des destinations qui n'ont pas été gardées par le joueur
      */
     public List<Destination> choisirDestinations(List<Destination> destinationsPossibles, int n) {
-        List<Destination> resultat;
+        List<Destination> resultatCardToDefausser = null;
+        int defausser = 0;
+        boolean passe = false;
+        while(defausser < n && passe == false){
+            List<String> boutons = Arrays.asList(destinationsPossibles.get(0).getNom(), destinationsPossibles.get(1).getNom(), destinationsPossibles.get(2).getNom(), destinationsPossibles.get(3).getNom());
+            String input = choisir("Choisissez une carte à défausser.", new ArrayList<>(), boutons, true);
 
-        
+            if(input.equals("")){
+                //Le joueur passe son tour
+                passe = true;
+            }else {
+                //Le joueur défausse une carte
+                defausser++;
+                for(int i=0; i<destinationsPossibles.size(); i++){
+                    if(destinationsPossibles.get(i).getNom().equals(input)){
+                        resultatCardToDefausser.add(destinationsPossibles.get(i));
+                        destinationsPossibles.remove(i);
+                    }
+                }
+            }
 
-        throw new RuntimeException("Méthode non implémentée !");
+
+        }
+
+
+        return resultatCardToDefausser;
     }
 
     /**
