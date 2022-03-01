@@ -275,7 +275,14 @@ public class Jeu implements Runnable {
      *         disponible)
      */
     public Destination piocherDestination() {
-        throw new RuntimeException("Méthode non implémentée !");
+       // throw new RuntimeException("Méthode non implémentée !");
+        Destination d = pileDestinations.get(1);
+
+        if(pileDestinations.isEmpty()){
+            d= null;
+        }
+        return d;
+
     }
 
     public List<Joueur> getJoueurs() {
