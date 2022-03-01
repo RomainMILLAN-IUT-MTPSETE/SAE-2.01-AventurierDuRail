@@ -211,8 +211,16 @@ public class Jeu implements Runnable {
      *
      * @param c carte à défausser
      */
+
     public void defausserCarteWagon(CouleurWagon c) {
-        throw new RuntimeException("Méthode non implémentée !");
+
+
+        //throw new RuntimeException("Méthode non implémentée !");
+        pileCartesWagon.add(c);
+        if(cartesWagonVisibles.size()>=5){
+            cartesWagonVisibles.add(c);
+        }
+
     }
 
     /**
@@ -223,16 +231,20 @@ public class Jeu implements Runnable {
      * @return la carte qui a été piochée (ou null si aucune carte disponible)
      */
     public CouleurWagon piocherCarteWagon() {
-        throw new RuntimeException("Méthode non implémentée !");
-    }
+        // throw new RuntimeException("Méthode non implémentée !");
+        CouleurWagon R=pileCartesWagon.get(1);
+        pileCartesWagon.remove(1);
+        if(pileCartesWagon.isEmpty()){
+            pileCartesWagon=defausseCartesWagon;
+            for(int i=0;i<5;i++){
+                Collections.shuffle(pileCartesWagon);
+            }
+// pour lui que je suis pas sûr
+            R = null;
+        }
 
-    /**
-     * Retire une carte wagon de la pile des cartes wagon visibles.
-     * Si une carte a été retirée, la pile de cartes wagons visibles est recomplétée
-     * (remise à 5, éventuellement remélangée si 3 locomotives visibles)
-     */
-    public void retirerCarteWagonVisible(CouleurWagon c) {
-        throw new RuntimeException("Méthode non implémentée !");
+        return R;
+
     }
 
     /**
