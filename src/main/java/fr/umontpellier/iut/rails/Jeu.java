@@ -137,7 +137,9 @@ public class Jeu implements Runnable {
         /**
          * PERSONNEL
          */
+        //DEBUT DU JEU, SELECTION DES CARTES
         for(int i=0; i<joueurs.size(); i++){
+            System.out.println(i);
             ArrayList<Destination> destinationPlayer = new ArrayList<>();
             destinationPlayer.add(this.getRandomLongDestinationCard());
 
@@ -148,6 +150,7 @@ public class Jeu implements Runnable {
             }
 
             System.out.println(joueurs.get(i).getNom());
+            //PROBLEME !
             List<Destination> aRemettreDansLeJeu = joueurs.get(i).choisirDestinations(destinationPlayer, 2);
             for(int x=0; x<aRemettreDansLeJeu.size(); x++){
                 if(aRemettreDansLeJeu.get(x).getValeur() < 14){
@@ -155,7 +158,25 @@ public class Jeu implements Runnable {
                     this.pileDestinations.add(aRemettreDansLeJeu.get(x));
                 }
             }
+        }
 
+        //LANCEMENT DU JEU
+        boolean arretDuJeu = false;
+        int dernierTourDujeu = 0;
+        while(arretDuJeu == false || dernierTourDujeu < joueurs.size()){
+            for(int i=0; i<joueurs.size(); i++){
+                joueurs.get(i).jouerTour();
+
+
+                //Pour la fin du jeu.
+                if(arretDuJeu == true){
+                    dernierTourDujeu++;
+                }
+                //Si le joueur à moin de 3 wagon (0,1 ou 2), alors la fin du jeu commence.
+                if(joueurs.get(i).getNbWagons() < 3){
+                    arretDuJeu = true;
+                }
+            }
         }
 
 
