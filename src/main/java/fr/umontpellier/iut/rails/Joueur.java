@@ -288,6 +288,26 @@ public class Joueur {
      * "construire une gare", "choisir les destinations à défausser", etc.)
      */
     public void jouerTour() {
+
+        String choix = this.choisir(
+                "Choissisez l'action à effectué.", // instruction
+                new ArrayList<>(), // choix (hors boutons, ici aucun)
+                new ArrayList<>(Arrays.asList("Piocher une carte Wagon (Visible)", "Piocher une carte Wagon (Cachée)", "Piocher une Destination", "Poser une Gare", "Poser une Route")), // boutons
+                false); // le joueur ne peut pas passer (il doit faire un choix)
+
+        if(choix.equalsIgnoreCase("Piocher une carte Wagon (Visible)")){
+
+        }else if(choix.equalsIgnoreCase("Piocher une carte Wagon (Cachée)")){
+
+        }else if (choix.equalsIgnoreCase("Poser une Gare")){
+
+        }else if(choix.equalsIgnoreCase("Poser une Router")){
+
+        }else {
+            System.out.println("ERROR");
+        }
+
+
         throw new RuntimeException("Méthode non implémentée !");
     }
 

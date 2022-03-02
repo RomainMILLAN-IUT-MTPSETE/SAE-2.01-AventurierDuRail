@@ -232,7 +232,6 @@ public class Jeu implements Runnable {
      *
      * @param c carte à défausser
      */
-
     public void defausserCarteWagon(CouleurWagon c) {
 
 
