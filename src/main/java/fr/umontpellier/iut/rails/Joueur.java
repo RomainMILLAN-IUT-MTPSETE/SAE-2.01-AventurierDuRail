@@ -298,11 +298,11 @@ public class Joueur {
         if(choix.equalsIgnoreCase("Piocher une carte Wagon (Visible)")){
 
         }else if(choix.equalsIgnoreCase("Piocher une carte Wagon (Cachée)")){
-
+            log("Pioche de carte Wagon");
         }else if (choix.equalsIgnoreCase("Poser une Gare")){
-
-        }else if(choix.equalsIgnoreCase("Poser une Router")){
-
+            log("Pose de Gare");
+        }else if(choix.equalsIgnoreCase("Poser une Route")){
+            log("Pose de route");
         }else {
             System.out.println("ERROR");
         }

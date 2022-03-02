@@ -165,6 +165,7 @@ public class Jeu implements Runnable {
         int dernierTourDujeu = 0;
         while(arretDuJeu == false || dernierTourDujeu < joueurs.size()){
             for(int i=0; i<joueurs.size(); i++){
+                log("Au tour de " + joueurs.get(i).getNom());
                 joueurs.get(i).jouerTour();
 
 
@@ -401,5 +402,9 @@ public class Jeu implements Runnable {
         }
 
         return resultat;
+    }
+
+    public void piocherCarteWagonVisible(){
+
     }
 }
