@@ -166,6 +166,8 @@ public class Jeu implements Runnable {
         while(arretDuJeu == false || dernierTourDujeu < joueurs.size()){
             for(int i=0; i<joueurs.size(); i++){
                 log("Au tour de <strong>" + joueurs.get(i).getNom() + "</strong>");
+
+                //Lancement du tour du joueur, voir sa suite dans Joueur.java
                 joueurs.get(i).jouerTour();
 
 
