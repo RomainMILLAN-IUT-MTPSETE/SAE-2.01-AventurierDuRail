@@ -241,6 +241,8 @@ public class Joueur {
             for(int j=0; j<destinationsPossibles.size(); j++){
                 boutons.add(destinationsPossibles.get(j).getNom());
             }
+
+            System.out.println(this.nom);
             String input = choisir("Choisissez une carte à défausser.", new ArrayList<>(), boutons, true);
 
             if(input.equals("")){

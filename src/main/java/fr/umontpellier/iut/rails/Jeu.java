@@ -139,7 +139,7 @@ public class Jeu implements Runnable {
          */
         //DEBUT DU JEU, SELECTION DES CARTES
         for(int i=0; i<joueurs.size(); i++){
-            System.out.println(i);
+            this.joueurCourant = this.joueurs.get(i);
             ArrayList<Destination> destinationPlayer = new ArrayList<>();
             destinationPlayer.add(this.getRandomLongDestinationCard());
 
@@ -149,14 +149,14 @@ public class Jeu implements Runnable {
                 destinationPlayer.add(destinationToCopieCardNormal.get(j));
             }
 
-            System.out.println(joueurs.get(i).getNom());
-            //PROBLEME !
             List<Destination> aRemettreDansLeJeu = joueurs.get(i).choisirDestinations(destinationPlayer, 2);
             for(int x=0; x<aRemettreDansLeJeu.size(); x++){
+
                 if(aRemettreDansLeJeu.get(x).getValeur() < 14){
                     //Destination Courte donc on remet dans le jeu
                     this.pileDestinations.add(aRemettreDansLeJeu.get(x));
                 }
+
             }
         }
 
@@ -412,4 +412,6 @@ public class Jeu implements Runnable {
     public void piocherCarteWagonVisible(){
 
     }
+
+    public static String DEVPREFIX = "<strong><p style='color: red'>MILLANR-TREGUIERE/DEVELOPPEMENT</p></strong> ";
 }
