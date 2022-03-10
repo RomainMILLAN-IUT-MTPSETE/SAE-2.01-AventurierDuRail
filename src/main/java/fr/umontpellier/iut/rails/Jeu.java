@@ -166,9 +166,10 @@ public class Jeu implements Runnable {
         while(arretDuJeu == false || dernierTourDujeu < joueurs.size()){
             for(int i=0; i<joueurs.size(); i++){
                 log("Au tour de <strong>" + joueurs.get(i).getNom() + "</strong>");
+                this.joueurCourant = this.joueurs.get(i);
 
                 //Lancement du tour du joueur, voir sa suite dans Joueur.java
-                joueurs.get(i).jouerTour();
+                this.joueurCourant.jouerTour();
 
 
                 //Pour la fin du jeu.
@@ -271,6 +272,44 @@ public class Jeu implements Runnable {
         this.pileCartesWagon.remove(0);
 
         return cartePiocher;
+    }
+
+    /**
+     * Retire une carte wwagon de la pile des cartes wagon visibles.
+     * Si une carte a été retirée, la pile de cartes wagons visibles est recomplétée
+     * (remise à 5, éventuellement remélangée si 3 locomotives visibles)
+     */
+    public void retirerCarteWagonVisible(CouleurWagon c){
+        this.cartesWagonVisibles.remove(c);
+
+        if(this.cartesWagonVisibles.size() < 5){
+            for(int i=0; i<this.cartesWagonVisibles.size(); i++){
+                CouleurWagon x = this.pileCartesWagon.get(0);
+                this.pileDestinations.remove(0);
+            }
+
+            int locoCarteVisible = 0;
+
+            do{
+                locoCarteVisible = 0;
+                for(int i=0; i<this.cartesWagonVisibles.size(); i++){
+                    if(this.cartesWagonVisibles.get(i) == CouleurWagon.LOCOMOTIVE){
+                        locoCarteVisible++;
+                    }
+                }
+
+                if(locoCarteVisible >= 3){
+                    for(int i=0; i<this.cartesWagonVisibles.size(); i++){
+                        this.cartesWagonVisibles.remove(0);
+                    }
+
+                    for(int i=0; i<5; i++){
+                        this.cartesWagonVisibles.add(this.piocherCarteWagon());
+                    }
+                }
+
+            }while(locoCarteVisible >= 3);
+        }
     }
 
     /**
@@ -410,7 +449,13 @@ public class Jeu implements Runnable {
     }
 
     public void piocherCarteWagonVisible(){
+        ArrayList<CouleurWagon> res = this.joueurCourant.choisirCarteWagonVisible(this.cartesWagonVisibles);
 
+        this.joueurCourant.ajouterCarteWagonDansMainJoueur(res);
+
+        for(int i=0; i<res.size(); i++){
+            this.retirerCarteWagonVisible(res.get(i));
+        }
     }
 
     public static String DEVPREFIX = "<strong><p style='color: red'>MILLANR-TREGUIERE/DEVELOPPEMENT</p></strong> ";

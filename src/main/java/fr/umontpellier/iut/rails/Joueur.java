@@ -298,9 +298,9 @@ public class Joueur {
                 false); // le joueur ne peut pas passer (il doit faire un choix)
 
         if(choix.equalsIgnoreCase("Piocher une carte Wagon (Visible)")){
-
+            this.jeu.piocherCarteWagonVisible();
         }else if(choix.equalsIgnoreCase("Piocher une carte Wagon (Cachée)")){
-
+            this.jeu.piocherCarteWagon();
         }else if (choix.equalsIgnoreCase("Poser une Gare")){
 
         }else if(choix.equalsIgnoreCase("Poser une Route")){
@@ -310,7 +310,6 @@ public class Joueur {
         }
 
 
-        throw new RuntimeException("Méthode non implémentée !");
     }
 
     /**
@@ -324,5 +323,51 @@ public class Joueur {
 
     public void addDestinationCardToListPlayer(Destination destination){
         this.destinations.add(destination);
+    }
+
+    public ArrayList<CouleurWagon> choisirCarteWagonVisible(List<CouleurWagon> listWagonVisible){
+        ArrayList<CouleurWagon> resultat = new ArrayList<>();
+
+        List<String> boutons = new ArrayList<>();
+        for(int j=0; j<listWagonVisible.size(); j++){
+            boutons.add(listWagonVisible.get(j).toString());
+        }
+
+        String input = choisir("Choisissez une carte wagon.", new ArrayList<>(), boutons, false);
+
+        for(int i=0; i<listWagonVisible.size(); i++){
+            if(listWagonVisible.get(i).toString().equalsIgnoreCase(input)){
+                resultat.add(listWagonVisible.get(i));
+            }
+        }
+
+        if(!input.equalsIgnoreCase("Locomotive")){
+            for(int i=0; i<boutons.size(); i++){
+                if(boutons.get(i).equalsIgnoreCase(input)){
+                    boutons.remove(i);
+                }
+            }
+
+            do{
+                input = choisir("Choisissez une carte wagon.", new ArrayList<>(), boutons, true);
+            }while(input.equalsIgnoreCase("Locomotive"));
+
+            if(!input.equalsIgnoreCase("")){
+                for(int i=0; i<listWagonVisible.size(); i++){
+                    if(listWagonVisible.get(i).toString().equalsIgnoreCase(input)){
+                        resultat.add(listWagonVisible.get(i));
+                    }
+                }
+            }
+
+        }
+
+        return resultat;
+    }
+
+    public void ajouterCarteWagonDansMainJoueur(ArrayList<CouleurWagon> listWagon){
+        for(int i=0; i<listWagon.size(); i++){
+            this.cartesWagon.add(listWagon.get(i));
+        }
     }
 }
