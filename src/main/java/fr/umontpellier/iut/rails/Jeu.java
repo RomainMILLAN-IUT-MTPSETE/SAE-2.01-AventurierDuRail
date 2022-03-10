@@ -165,7 +165,7 @@ public class Jeu implements Runnable {
         int dernierTourDujeu = 0;
         while(arretDuJeu == false || dernierTourDujeu < joueurs.size()){
             for(int i=0; i<joueurs.size(); i++){
-                log("Au tour de " + joueurs.get(i).getNom());
+                log("Au tour de <strong>" + joueurs.get(i).getNom() + "</strong>");
                 joueurs.get(i).jouerTour();
 
 
