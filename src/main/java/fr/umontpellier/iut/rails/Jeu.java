@@ -265,10 +265,10 @@ public class Jeu implements Runnable {
 
             //On mélange les cartes dans la pile.
             Collections.shuffle(this.pileCartesWagon);
-
-        }else {
-            cartePiocher = this.pileCartesWagon.get(0);
         }
+
+        cartePiocher = this.pileCartesWagon.get(0);
+        this.pileCartesWagon.remove(0);
 
         return cartePiocher;
     }
