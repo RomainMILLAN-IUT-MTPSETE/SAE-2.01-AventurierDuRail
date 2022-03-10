@@ -237,13 +237,13 @@ public class Jeu implements Runnable {
      */
     public void defausserCarteWagon(CouleurWagon c) {
 
-
-        //throw new RuntimeException("Méthode non implémentée !");
-        pileCartesWagon.add(c);
-        if(cartesWagonVisibles.size()>=5){
-            cartesWagonVisibles.add(c);
+        if(cartesWagonVisibles.size()<5){
+            for(int i=0; i<5-cartesWagonVisibles.size(); i++){
+                cartesWagonVisibles.add(c);
+            }
         }
 
+        defausseCartesWagon.add(c);
     }
 
     /**
