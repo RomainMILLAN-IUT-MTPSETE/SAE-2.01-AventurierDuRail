@@ -137,6 +137,32 @@ public class Jeu implements Runnable {
         /**
          * PERSONNEL
          */
+        //MISE EN PLACE DES CARTES WAGON VISIBLES
+        for(int i=0; i<12; i++){
+            this.pileCartesWagon.add(CouleurWagon.ROSE);
+            this.pileCartesWagon.add(CouleurWagon.BLANC);
+            this.pileCartesWagon.add(CouleurWagon.BLEU);
+            this.pileCartesWagon.add(CouleurWagon.JAUNE);
+            this.pileCartesWagon.add(CouleurWagon.ORANGE);
+            this.pileCartesWagon.add(CouleurWagon.NOIR);
+            this.pileCartesWagon.add(CouleurWagon.ROUGE);
+            this.pileCartesWagon.add(CouleurWagon.VERT);
+        }
+
+        for(int i=0; i<14; i++){
+            this.pileCartesWagon.add(CouleurWagon.LOCOMOTIVE);
+        }
+
+        Collections.shuffle(this.pileCartesWagon);
+
+        if(this.cartesWagonVisibles.size() < 5){
+            int carteWagonVisibleSizeFirst = this.cartesWagonVisibles.size();
+            for(int i=0; i<5-carteWagonVisibleSizeFirst; i++){
+                CouleurWagon select = this.piocherCarteWagon();
+                this.cartesWagonVisibles.add(select);
+            }
+        }
+
         //DEBUT DU JEU, SELECTION DES CARTES
         for(int i=0; i<joueurs.size(); i++){
             this.joueurCourant = this.joueurs.get(i);
