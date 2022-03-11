@@ -32,6 +32,7 @@ Ce projet a lieu dans le cadre des Situations d'Apprentissage et Évaluation du 
   * **Enseignants :**
       [Irène Larramendy](mailto:irene.larramendy-valverde@umontpellier.fr),
       [Alain Marie-Jeanne](mailto:alain.marie-jeanne@umontpellier.fr)
+
 * **Phase 3 : _implémentation d'une interface graphique sous [JavaFX](https://openjfx.io/)_**
   * **Cours concerné** : _Interface Homme-Machine_
   * **Enseignants :**
@@ -166,9 +167,6 @@ L'intégralité du code source du projet doit résider dans le dépôt GitLab as
 Toutes les méthodes qui lèvent une exception avec l'instruction `throw new RuntimeException("Méthode non implémentée !")` doivent être complétées selon les spécifications (en respectant leurs signatures). Vous êtes encouragés à ajouter des attributs et méthodes aux classes, lorsque cela vous semble nécessaire. La modification du corps des méthodes qui vous sont fournies est possible à condition de ne pas modifier le fonctionnement général de ces fonctions (décrit dans la spécification des méthodes).
 
 **Rappel : pas de modification des signatures des méthodes/attributs qui vous sont fournis.**
-
-L'exécution de la méthode `main(String args[])` de la classe `App` (à la racine du projet) doit démarrer une partie avec un nombre de cartes inventaire correspondant au nombre de vies attribuées au joueur.
-Cette fonction servira simplement à exécuter manuellement une partie et à faire des petites simulations.
 
 ## Évaluation
 
