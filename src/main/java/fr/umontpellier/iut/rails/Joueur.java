@@ -365,9 +365,8 @@ public class Joueur {
         return resultat;
     }
 
-    public void ajouterCarteWagonDansMainJoueur(ArrayList<CouleurWagon> listWagon){
-        for(int i=0; i<listWagon.size(); i++){
-            this.cartesWagon.add(listWagon.get(i));
-        }
+    public void ajouterCarteWagonDansMainJoueur(CouleurWagon wagonColor){
+        this.cartesWagon.add(wagonColor);
+        this.nbWagons++;
     }
 }

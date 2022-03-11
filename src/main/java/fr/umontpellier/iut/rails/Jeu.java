@@ -155,13 +155,7 @@ public class Jeu implements Runnable {
 
         Collections.shuffle(this.pileCartesWagon);
 
-        if(this.cartesWagonVisibles.size() < 5){
-            int carteWagonVisibleSizeFirst = this.cartesWagonVisibles.size();
-            for(int i=0; i<5-carteWagonVisibleSizeFirst; i++){
-                CouleurWagon select = this.piocherCarteWagon();
-                this.cartesWagonVisibles.add(select);
-            }
-        }
+        this.resetCarteWagonVisible();
 
         //DEBUT DU JEU, SELECTION DES CARTES
         for(int i=0; i<joueurs.size(); i++){
@@ -444,6 +438,10 @@ public class Jeu implements Runnable {
     /**
      * PERSONEL
      */
+    /**
+     * Cette fonction permet d'avoir une carte longue distance en random, celle-ci sera retournée a la fin de l'execution.
+     * @return
+     */
     public Destination getRandomLongDestinationCard(){
         Destination resultat;
 
@@ -459,6 +457,11 @@ public class Jeu implements Runnable {
         return resultat;
     }
 
+    /**
+     * Retourne une liste de carte destination piocher au hasard dans la pileDestination.
+     * @param numberCardToGet
+     * @return
+     */
     public ArrayList<Destination> getRandomDestinationCard(int numberCardToGet){
         ArrayList<Destination> resultat = new ArrayList<>();
 
@@ -474,13 +477,31 @@ public class Jeu implements Runnable {
         return resultat;
     }
 
+    /**
+     * Permet de piocher une carte Wagon en face Visible
+     */
     public void piocherCarteWagonVisible(){
         ArrayList<CouleurWagon> res = this.joueurCourant.choisirCarteWagonVisible(this.cartesWagonVisibles);
 
-        this.joueurCourant.ajouterCarteWagonDansMainJoueur(res);
-
         for(int i=0; i<res.size(); i++){
+            this.joueurCourant.ajouterCarteWagonDansMainJoueur(res.get(i));
             this.retirerCarteWagonVisible(res.get(i));
+            log("<strong>" + this.joueurCourant.getNom() + "</strong> à piocher une carte wagon de couleur <p style='color: " + res.get(i).toString() + "'>" + res.get(i).toString() + "</p>");
+        }
+
+        this.resetCarteWagonVisible();
+    }
+
+    /**
+     * Remet toutes les cartes wagon en face visible (5)
+     */
+    public void resetCarteWagonVisible(){
+        if(this.cartesWagonVisibles.size() < 5){
+            int carteWagonVisibleSizeFirst = this.cartesWagonVisibles.size();
+            for(int i=0; i<5-carteWagonVisibleSizeFirst; i++){
+                CouleurWagon select = this.piocherCarteWagon();
+                this.cartesWagonVisibles.add(select);
+            }
         }
     }
 
