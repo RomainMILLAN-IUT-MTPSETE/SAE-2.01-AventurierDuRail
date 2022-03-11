@@ -478,31 +478,87 @@ public class Jeu implements Runnable {
     }
 
     /**
-     * Permet de piocher une carte Wagon en face Visible
-     */
-    public void piocherCarteWagonVisible(){
-        ArrayList<CouleurWagon> res = this.joueurCourant.choisirCarteWagonVisible(this.cartesWagonVisibles);
-
-        for(int i=0; i<res.size(); i++){
-            this.joueurCourant.ajouterCarteWagonDansMainJoueur(res.get(i));
-            this.retirerCarteWagonVisible(res.get(i));
-            log("<strong>" + this.joueurCourant.getNom() + "</strong> à piocher une carte wagon de couleur <p style='color: " + res.get(i).toString() + "'>" + res.get(i).toString() + "</p>");
-        }
-
-        this.resetCarteWagonVisible();
-    }
-
-    /**
      * Remet toutes les cartes wagon en face visible (5)
      */
     public void resetCarteWagonVisible(){
+        int carteWagonVisibleSizeFirst = this.cartesWagonVisibles.size();
         if(this.cartesWagonVisibles.size() < 5){
-            int carteWagonVisibleSizeFirst = this.cartesWagonVisibles.size();
             for(int i=0; i<5-carteWagonVisibleSizeFirst; i++){
                 CouleurWagon select = this.piocherCarteWagon();
                 this.cartesWagonVisibles.add(select);
             }
         }
+
+        int nbrCarteLoco = 0;
+        for(int i=0; i<this.cartesWagonVisibles.size(); i++){
+            if(this.cartesWagonVisibles.get(i).equals(CouleurWagon.LOCOMOTIVE)){
+                nbrCarteLoco++;
+            }
+        }
+
+        if(nbrCarteLoco >= 3){
+            this.resetAllCarteWagonVisible();
+        }else {
+            log("Remise de " + (5-carteWagonVisibleSizeFirst) + " cartes en carte <strong>visibles</strong>.");
+        }
+    }
+
+    /**
+     * Reset toutes les cartes wagon face visible
+     */
+    public void resetAllCarteWagonVisible(){
+        int carteWagonVisibleSizeFirst = this.cartesWagonVisibles.size();
+        for(int i=0; i<carteWagonVisibleSizeFirst; i++){
+            this.cartesWagonVisibles.remove(0);
+        }
+
+        for(int i=0; i<5; i++){
+            CouleurWagon select = piocherCarteWagon();
+            this.cartesWagonVisibles.add(select);
+        }
+
+        int nbrCarteLoco = 0;
+        for(int i=0; i<this.cartesWagonVisibles.size(); i++){
+            if(this.cartesWagonVisibles.get(i).equals(CouleurWagon.LOCOMOTIVE)){
+                nbrCarteLoco++;
+            }
+        }
+
+        if(nbrCarteLoco >= 3){
+            this.resetAllCarteWagonVisible();
+        }else {
+            log("Reset de <strong>TOUTES</strong> les cartes wagon visibles.");
+        }
+    }
+
+
+    /**
+     * Piocher Carte fonction jouerTour().
+     */
+    public void jouerTourPiocheWagonVisible(){
+        ArrayList<CouleurWagon> res = this.joueurCourant.choisirCarteWagonVisible(this.cartesWagonVisibles);
+
+        for(int i=0; i<res.size(); i++){
+            this.joueurCourant.ajouterCarteWagonDansMainJoueur(res.get(i));
+            this.retirerCarteWagonVisible(res.get(i));
+            log("<strong>" + this.joueurCourant.getNom() + "</strong> à piocher une carte wagon de couleur " + res.get(i).toString());
+        }
+
+        this.resetCarteWagonVisible();
+    }
+
+    public void jouerTourPiocherWagon(){
+        //A voir avec le prof
+        CouleurWagon w1 = this.piocherCarteWagon();
+        CouleurWagon w2 = this.piocherCarteWagon();
+        this.joueurCourant.ajouterCarteWagonDansMainJoueur(w1);
+        this.joueurCourant.ajouterCarteWagonDansMainJoueur(w2);
+
+        log("<strong>" + this.joueurCourant.getNom() + "</strong>, à piocher 2 cartes wagons.");
+    }
+
+    public void jouerTourPiocherDestination(){
+
     }
 
     public static String DEVPREFIX = "<strong><p style='color: red'>MILLANR-TREGUIERE/DEVELOPPEMENT</p></strong> ";

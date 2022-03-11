@@ -298,9 +298,11 @@ public class Joueur {
                 false); // le joueur ne peut pas passer (il doit faire un choix)
 
         if(choix.equalsIgnoreCase("Piocher une carte Wagon (Visible)")){
-            this.jeu.piocherCarteWagonVisible();
+            this.jeu.jouerTourPiocheWagonVisible();
         }else if(choix.equalsIgnoreCase("Piocher une carte Wagon (Cachée)")){
-            this.jeu.piocherCarteWagon();
+            this.jeu.jouerTourPiocherWagon();
+        }else if(choix.equalsIgnoreCase("Piocher une Destination")){
+            this.jeu.jouerTourPiocherDestination();
         }else if (choix.equalsIgnoreCase("Poser une Gare")){
 
         }else if(choix.equalsIgnoreCase("Poser une Route")){
@@ -338,6 +340,7 @@ public class Joueur {
         for(int i=0; i<listWagonVisible.size(); i++){
             if(listWagonVisible.get(i).toString().equalsIgnoreCase(input)){
                 resultat.add(listWagonVisible.get(i));
+                break;
             }
         }
 
@@ -345,6 +348,7 @@ public class Joueur {
             for(int i=0; i<boutons.size(); i++){
                 if(boutons.get(i).equalsIgnoreCase(input)){
                     boutons.remove(i);
+                    break;
                 }
             }
 
@@ -356,6 +360,7 @@ public class Joueur {
                 for(int i=0; i<listWagonVisible.size(); i++){
                     if(listWagonVisible.get(i).toString().equalsIgnoreCase(input)){
                         resultat.add(listWagonVisible.get(i));
+                        break;
                     }
                 }
             }
