@@ -651,21 +651,22 @@ public class Joueur {
                         choixCarte3 = this.cartesWagon.get(2).toString();
                     }else {
                         do{
+                            color1 = false;
+                            color2 = false;
+                            c1 = false;
+                            c2 = false;
+                            c3 = false;
                             cartesPossibles = new ArrayList<>();
                             for(int i=0; i<this.cartesWagon.size(); i++){
                                 cartesPossibles.add(this.cartesWagon.get(i).toString());
                                 cartesSaves.add(this.cartesWagon.get(i).toString());
                             }
                             choixCarte1 = this.choisir("Choisir la 1er carte à défausser", new ArrayList<>(), cartesPossibles, false);
-                            String loco = CouleurWagon.LOCOMOTIVE.toString();
-                            if(choixCarte1.equalsIgnoreCase(loco)){
+
+                            if(choixCarte1.equalsIgnoreCase(CouleurWagon.LOCOMOTIVE.toString())){
                                c1 = true;
                             }else {
                                 c1 = true;
-                            }
-
-                            if(choixCarte1.equalsIgnoreCase("Locomotive")){
-                            }else {
                                 color1 = true;
                             }
 
