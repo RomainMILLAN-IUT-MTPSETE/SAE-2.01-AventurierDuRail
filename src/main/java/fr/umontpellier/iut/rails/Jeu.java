@@ -591,8 +591,9 @@ public class Jeu implements Runnable {
         res.add(this.piocherDestination());
         res.add(this.piocherDestination());
 
-        this.joueurCourant.choisirDestination(res);
-        this.joueurCourant.addDestinationListCardToListPlayer(res);
+        ArrayList<Destination> finalRes = this.joueurCourant.choisirDestination(res);
+        this.joueurCourant.addDestinationListCardToListPlayer(finalRes);
+        log("<strong>" + this.joueurCourant.getNom() + "</strong>, à piocher " + finalRes.size() + " cartes destinations");
     }
 
     public static String DEVPREFIX = "<strong><p style='color: red'>MILLANR-TREGUIERE/DEVELOPPEMENT</p></strong> ";
