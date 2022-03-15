@@ -335,7 +335,7 @@ public class Jeu implements Runnable {
         if(this.cartesWagonVisibles.size() < 5){
             for(int i=0; i<this.cartesWagonVisibles.size(); i++){
                 CouleurWagon x = this.pileCartesWagon.get(0);
-                this.pileDestinations.remove(0);
+                this.pileCartesWagon.remove(0);
             }
 
             int locoCarteVisible = 0;
