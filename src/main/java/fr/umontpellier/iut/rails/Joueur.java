@@ -374,4 +374,47 @@ public class Joueur {
         this.cartesWagon.add(wagonColor);
         this.nbWagons++;
     }
+
+
+    public ArrayList<Destination> choisirDestination(ArrayList<Destination> listDestination){
+        ArrayList<Destination> resultat = new ArrayList<>();
+
+        List<String> boutons = new ArrayList<>();
+        for(int i=0; i<listDestination.size(); i++){
+            boutons.add(listDestination.get(i).getNom());
+            resultat.add(listDestination.get(i));
+        }
+
+        String input = choisir("Vous pouvez défausser au maximum 2 cartes", new ArrayList<>(), boutons, true);
+
+        if(!input.equalsIgnoreCase("")){
+            for(int i=0; i<resultat.size(); i++){
+                if(resultat.get(i).getNom().equalsIgnoreCase(input)){
+                    resultat.remove(i);
+                    break;
+                }
+            }
+
+            for(int i=0; i<boutons.size(); i++){
+                if(boutons.get(i).equalsIgnoreCase(input)){
+                    boutons.remove(i);
+                    break;
+                }
+            }
+
+            input = choisir("Vous pouvez défausser au maximum 1 carte", new ArrayList<>(), boutons, true);
+
+            if(!input.equalsIgnoreCase("")){
+                for(int i=0; i<resultat.size(); i++){
+                    if(resultat.get(i).getNom().equalsIgnoreCase(input)){
+                        resultat.remove(i);
+                        break;
+                    }
+                }
+            }
+        }
+
+        return resultat;
+
+    }
 }

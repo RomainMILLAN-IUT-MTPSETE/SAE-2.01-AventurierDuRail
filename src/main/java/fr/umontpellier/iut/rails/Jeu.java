@@ -339,15 +339,20 @@ public class Jeu implements Runnable {
      *         disponible)
      */
     public Destination piocherDestination() {
-       // throw new RuntimeException("Méthode non implémentée !");
-        Destination d = pileDestinations.get(1);
+        // throw new RuntimeException("Méthode non implémentée !");
+        Destination d = null;
 
         if(pileDestinations.isEmpty()){
-            d= null;
+            d = null;
+        }else {
+            d = pileDestinations.get(0);
+            this.pileDestinations.remove(0);
         }
-        return d;
 
+        return d;
     }
+
+
 
     public List<Joueur> getJoueurs() {
         return joueurs;
@@ -558,6 +563,18 @@ public class Jeu implements Runnable {
     }
 
     public void jouerTourPiocherDestination(){
+        //piocher 3 et en garder au moins 1 et défausser 2 max pas obliger donc fin liste
+        ArrayList<Destination> res = new ArrayList<Destination>();
+        Destination d1 = this.piocherDestination();
+        Destination d2 = this.piocherDestination();
+        Destination d3 = this.piocherDestination();
+        res.add(d1);
+        res.add(d2);
+        res.add(d3);
+        this.joueurCourant.choisirDestination(res);
+
+
+
 
     }
 
