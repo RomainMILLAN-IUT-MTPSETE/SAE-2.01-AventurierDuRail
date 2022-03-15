@@ -425,7 +425,7 @@ public class Joueur {
             if(!dejasVus.contains(this.cartesWagon.get(i))){
                 int cmpt = 0;
                 for(int x=0; x<this.cartesWagon.size(); x++){
-                    if(this.cartesWagon.get(x).equals(this.cartesWagon.get(i))){
+                    if(this.cartesWagon.get(x).equals(this.cartesWagon.get(i)) || this.cartesWagon.get(x).equals(CouleurWagon.LOCOMOTIVE)){
                         cmpt++;
                     }
                 }
@@ -497,7 +497,7 @@ public class Joueur {
                     this.jouerTour();
                 }
             }else if(this.nbGares == 2){
-                //2nd Gare
+                //2nd Gare => 2 wagon de mm couleur
                 if(this.nbWagonMemeCouleurMax() >= 2){
 
                     ArrayList<String> villePossibles = new ArrayList<>();
@@ -528,37 +528,61 @@ public class Joueur {
                     String choixCarte1;
                     String choixCarte2;
 
-                    do{
-                        choixCarte1 = this.choisir("Choisir la 1er carte à défausser", new ArrayList<>(), cartesPossibles, false);
-                        for(int i=0; i<cartesPossibles.size(); i++){
-                            if(cartesPossibles.get(i).toString().equalsIgnoreCase(choixCarte1)){
-                                cartesPossibles.remove(i);
-                                break;
+                    if(this.nbWagonMemeCouleurMax() == 2){
+                        choixCarte1 = this.cartesWagon.get(0).toString();
+                        choixCarte2 = this.cartesWagon.get(1).toString();
+                    }else {
+                        do{
+                            choixCarte1 = this.choisir("Choisir la 1er carte à défausser", new ArrayList<>(), cartesPossibles, false);
+                            for(int i=0; i<cartesPossibles.size(); i++){
+                                if(cartesPossibles.get(i).toString().equalsIgnoreCase(choixCarte1)){
+                                    cartesPossibles.remove(i);
+                                    break;
+                                }
                             }
-                        }
-                        choixCarte2 = this.choisir("Choisir la 2nd carte à défausser", new ArrayList<>(), cartesPossibles, false);
-                        for(int i=0; i<cartesPossibles.size(); i++){
-                            cartesPossibles.remove(0);
-                        }
-                        cartesPossibles.addAll(cartesSaves);
-                    }while(!choixCarte1.equalsIgnoreCase(choixCarte2));
+                            choixCarte2 = this.choisir("Choisir la 2nd carte à défausser", new ArrayList<>(), cartesPossibles, false);
 
-                    boolean find1 = false;
+                            for(int i=0; i<cartesPossibles.size(); i++){
+                                cartesPossibles.remove(0);
+                            }
+                            cartesPossibles.addAll(cartesSaves);
+                        }while(!choixCarte1.equalsIgnoreCase(choixCarte2) && !choixCarte1.equals(CouleurWagon.LOCOMOTIVE.toString()) && !choixCarte2.equals(CouleurWagon.LOCOMOTIVE.toString()));
+                    }
+
+
+                    boolean find = false;
                     int i=0;
                     while(i<this.cartesWagon.size()){
-                        if(this.cartesWagon.get(i).toString().equalsIgnoreCase(choixCarte1)){
-                            this.cartesWagonPosees.add(this.cartesWagon.get(i));
-                            this.cartesWagon.remove(i);
+                        if(choixCarte1.equalsIgnoreCase(CouleurWagon.LOCOMOTIVE.toString())){
+                            if(this.cartesWagon.get(i).toString().equalsIgnoreCase(choixCarte2) || this.cartesWagon.get(i).toString().equals(CouleurWagon.LOCOMOTIVE.toString())){
+                                this.cartesWagonPosees.add(this.cartesWagon.get(i));
+                                this.cartesWagon.remove(i);
 
-                            if(find1 == true){
-                                break;
+                                if(find == true){
+                                    break;
+                                }else {
+                                    find = true;
+                                    i=0;
+                                }
                             }else {
-                                find1 = true;
-                                i=0;
+                                i++;
                             }
                         }else {
-                            i++;
+                            if(this.cartesWagon.get(i).toString().equalsIgnoreCase(choixCarte1) || this.cartesWagon.get(i).toString().equals(CouleurWagon.LOCOMOTIVE.toString())){
+                                this.cartesWagonPosees.add(this.cartesWagon.get(i));
+                                this.cartesWagon.remove(i);
+
+                                if(find == true){
+                                    break;
+                                }else {
+                                    find = true;
+                                    i=0;
+                                }
+                            }else {
+                                i++;
+                            }
                         }
+
                     }
 
                     ArrayList<String> finalChose = new ArrayList<>();
