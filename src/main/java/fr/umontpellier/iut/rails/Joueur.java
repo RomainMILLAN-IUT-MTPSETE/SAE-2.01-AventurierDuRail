@@ -304,9 +304,9 @@ public class Joueur {
         }else if(choix.equalsIgnoreCase("Piocher une Destination")){
             this.jeu.jouerTourPiocherDestination();
         }else if (choix.equalsIgnoreCase("Poser une Gare")){
-
+            this.jouerTourPoserGare();
         }else if(choix.equalsIgnoreCase("Poser une Route")){
-
+            this.jeu.jouerTourPoserRoute();
         }else {
             System.out.println("ERROR");
         }
@@ -375,7 +375,6 @@ public class Joueur {
         this.nbWagons++;
     }
 
-
     public ArrayList<Destination> choisirDestination(ArrayList<Destination> listDestination){
         ArrayList<Destination> resultat = new ArrayList<>();
 
@@ -416,5 +415,109 @@ public class Joueur {
 
         return resultat;
 
+    }
+
+    public int nbWagonMemeCouleurMax(){
+        ArrayList<CouleurWagon> dejasVus = new ArrayList<>();
+        int max = 0;
+
+        for(int i=0; i<this.cartesWagon.size(); i++){
+            if(!dejasVus.contains(this.cartesWagon.get(i))){
+                int cmpt = 0;
+                for(int x=0; x<this.cartesWagon.size(); x++){
+                    if(this.cartesWagon.get(x).equals(this.cartesWagon.get(i))){
+                        cmpt++;
+                    }
+                }
+
+                if(cmpt > max){
+                    max = cmpt;
+                }
+
+            }
+        }
+
+        return max;
+    }
+
+    public void jouerTourPoserGare(){
+        if(this.nbGares > 0){
+            if(this.nbGares == 3){
+                //1er Gare
+                if(this.nbWagonMemeCouleurMax() >= 1){
+
+                    ArrayList<String> villePossibles = new ArrayList<>();
+                    for (int i=0; i<this.jeu.getVilles().size(); i++) {
+                        if (this.jeu.getVilles().get(i).getProprietaire() == null) {
+                            villePossibles.add(this.jeu.getVilles().get(i).getNom());
+                        }
+                    }
+                    String choixVille;
+                    Ville villeChoisis = null;
+                    do{
+                        choixVille = this.choisir("Choisissez une gare", villePossibles, new ArrayList<>(), true);
+
+                        for(int i=0; i<this.jeu.getVilles().size(); i++){
+                            if(this.jeu.getVilles().get(i).toString().equalsIgnoreCase(choixVille)){
+                                villeChoisis = this.jeu.getVilles().get(i);
+                            }
+                        }
+                    }while(villeChoisis.getProprietaire() != null || choixVille.equalsIgnoreCase(""));
+
+                    ArrayList<String> cartesPossibles = new ArrayList<>();
+                    for(int i=0; i<this.cartesWagon.size(); i++){
+                        cartesPossibles.add(this.cartesWagon.get(i).toString());
+                    }
+                    String choixCarte = this.choisir("Choisir la carte à défausser", new ArrayList<>(), cartesPossibles, false);
+
+                    for(int i=0; i<this.cartesWagon.size(); i++){
+                        if(this.cartesWagon.get(i).toString().equalsIgnoreCase(choixCarte)){
+                            this.cartesWagonPosees.add(this.cartesWagon.get(i));
+                            this.cartesWagon.remove(i);
+                            break;
+                        }
+                    }
+
+                    ArrayList<String> finalChose = new ArrayList<>();
+                    finalChose.add("Oui"); finalChose.add("Non, tous annulé");
+                    String choixFinal = this.choisir("Êtes-vous sûre de vouloir prendre la gâre de " + villeChoisis.getNom() + ", avec la carte " + this.cartesWagonPosees.get(0).toString() + " ?", new ArrayList<>(), finalChose, false);
+
+                    if(choixFinal.equalsIgnoreCase("Oui")){
+                        villeChoisis.setProprietaire(this);
+                        this.cartesWagonPosees.remove(0);
+                        this.nbGares--;
+                    }else {
+                        this.cartesWagon.add(this.cartesWagonPosees.get(0));
+                        this.cartesWagonPosees.remove(0);
+                        this.jouerTour();
+                    }
+
+                }else {
+                    log(this.nom + " il est <strong>impossible</strong> pour vous de contruire une gare, vous n'avez pas assez de cartes wagons de même couleur");
+                    this.jouerTour();
+                }
+            }else if(this.nbGares == 2){
+                //2nd Gare
+                if(this.nbWagonMemeCouleurMax() >= 2){
+
+                }else {
+                    log(this.nom + " il est <strong>impossible</strong> pour vous de contruire une gare, vous n'avez pas assez de cartes wagons de même couleur");
+                    this.jouerTour();
+                }
+            }else if(this.nbGares == 1){
+                //3eme Gare
+                if(this.nbWagonMemeCouleurMax() >= 3){
+
+                }else {
+                    log(this.nom + " il est <strong>impossible</strong> pour vous de contruire une gare, vous n'avez pas assez de cartes wagons de même couleur");
+                    this.jouerTour();
+                }
+            }else {
+                System.out.println("IMPOSSIBLE");
+            }
+        }else {
+            log(this.nom + " il est <strong>impossible</strong> pour vous de contruire une gare, vous n'avez plus de gare");
+            this.jouerTour();
+        }
     }
 }

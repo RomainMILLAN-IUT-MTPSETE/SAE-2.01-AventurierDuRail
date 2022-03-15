@@ -93,6 +93,26 @@ public class Jeu implements Runnable {
         //PERSO
         this.longDestinationList = Destination.makeDestinationsLonguesEurope();
         this.pileDestinations = Destination.makeDestinationsEurope();
+
+        //MISE EN PLACE DES CARTES WAGON VISIBLES
+        for(int i=0; i<12; i++){
+            this.pileCartesWagon.add(CouleurWagon.ROSE);
+            this.pileCartesWagon.add(CouleurWagon.BLANC);
+            this.pileCartesWagon.add(CouleurWagon.BLEU);
+            this.pileCartesWagon.add(CouleurWagon.JAUNE);
+            this.pileCartesWagon.add(CouleurWagon.ORANGE);
+            this.pileCartesWagon.add(CouleurWagon.NOIR);
+            this.pileCartesWagon.add(CouleurWagon.ROUGE);
+            this.pileCartesWagon.add(CouleurWagon.VERT);
+        }
+
+        for(int i=0; i<14; i++){
+            this.pileCartesWagon.add(CouleurWagon.LOCOMOTIVE);
+        }
+
+        Collections.shuffle(this.pileCartesWagon);
+
+        this.resetCarteWagonVisible();
     }
 
     public List<CouleurWagon> getPileCartesWagon() {
@@ -137,26 +157,6 @@ public class Jeu implements Runnable {
         /**
          * PERSONNEL
          */
-        //MISE EN PLACE DES CARTES WAGON VISIBLES
-        for(int i=0; i<12; i++){
-            this.pileCartesWagon.add(CouleurWagon.ROSE);
-            this.pileCartesWagon.add(CouleurWagon.BLANC);
-            this.pileCartesWagon.add(CouleurWagon.BLEU);
-            this.pileCartesWagon.add(CouleurWagon.JAUNE);
-            this.pileCartesWagon.add(CouleurWagon.ORANGE);
-            this.pileCartesWagon.add(CouleurWagon.NOIR);
-            this.pileCartesWagon.add(CouleurWagon.ROUGE);
-            this.pileCartesWagon.add(CouleurWagon.VERT);
-        }
-
-        for(int i=0; i<14; i++){
-            this.pileCartesWagon.add(CouleurWagon.LOCOMOTIVE);
-        }
-
-        Collections.shuffle(this.pileCartesWagon);
-
-        this.resetCarteWagonVisible();
-
         //DEBUT DU JEU, SELECTION DES CARTES
         for(int i=0; i<joueurs.size(); i++){
             this.joueurCourant = this.joueurs.get(i);
@@ -230,7 +230,7 @@ public class Jeu implements Runnable {
          * interagir avec l'utilisateur, il n'a rien à voir avec le code de la partie et
          * doit donc être entièrement réécrit.
          */
-        /**
+        /*
         // Exemple d'utilisation
         while (true) {
             // le joueur doit choisir une valeur parmi "1", "2", "3", "4", "6" ou "8"
@@ -297,20 +297,29 @@ public class Jeu implements Runnable {
      */
     public CouleurWagon piocherCarteWagon() {
         CouleurWagon cartePiocher = null;
+        boolean defausseEmpty = false;
 
         if(pileCartesWagon.isEmpty()){
-            //Copie de la défause dans la pile & suppression des cartes de la défausse.
-            for(int i=0; i<this.defausseCartesWagon.size(); i++){
-                this.pileCartesWagon.add(this.defausseCartesWagon.get(i));
-                this.defausseCartesWagon.remove(0);
+            if(this.defausseCartesWagon.isEmpty()){
+                defausseEmpty = true;
+            }else {
+                //Copie de la défause dans la pile & suppression des cartes de la défausse.
+                for(int i=0; i<this.defausseCartesWagon.size(); i++){
+                    this.pileCartesWagon.add(this.defausseCartesWagon.get(0));
+                    this.defausseCartesWagon.remove(0);
+                }
+
+                //On mélange les cartes dans la pile.
+                Collections.shuffle(this.pileCartesWagon);
             }
 
-            //On mélange les cartes dans la pile.
-            Collections.shuffle(this.pileCartesWagon);
         }
 
-        cartePiocher = this.pileCartesWagon.get(0);
-        this.pileCartesWagon.remove(0);
+        if(defausseEmpty == false){
+            cartePiocher = this.pileCartesWagon.get(0);
+            this.pileCartesWagon.remove(0);
+        }
+
 
         return cartePiocher;
     }
@@ -535,6 +544,7 @@ public class Jeu implements Runnable {
     public void resetAllCarteWagonVisible(){
         int carteWagonVisibleSizeFirst = this.cartesWagonVisibles.size();
         for(int i=0; i<carteWagonVisibleSizeFirst; i++){
+            this.defausseCartesWagon.add(this.cartesWagonVisibles.get(0));
             this.cartesWagonVisibles.remove(0);
         }
 
@@ -594,6 +604,10 @@ public class Jeu implements Runnable {
         ArrayList<Destination> finalRes = this.joueurCourant.choisirDestination(res);
         this.joueurCourant.addDestinationListCardToListPlayer(finalRes);
         log("<strong>" + this.joueurCourant.getNom() + "</strong>, à piocher " + finalRes.size() + " cartes destinations");
+    }
+
+    public void jouerTourPoserRoute(){
+
     }
 
     public static String DEVPREFIX = "<strong><p style='color: red'>MILLANR-TREGUIERE/DEVELOPPEMENT</p></strong> ";
