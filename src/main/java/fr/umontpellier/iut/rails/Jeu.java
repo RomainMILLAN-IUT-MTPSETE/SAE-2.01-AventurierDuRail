@@ -178,6 +178,27 @@ public class Jeu implements Runnable {
                 }
 
             }
+
+            int y=0;
+            while(y<destinationPlayer.size()){
+                boolean ok = false;
+
+                for(int x=0; x<aRemettreDansLeJeu.size(); x++){
+                    if(destinationPlayer.get(y).getNom().equalsIgnoreCase(aRemettreDansLeJeu.get(x).getNom())){
+                        destinationPlayer.remove(y);
+                        aRemettreDansLeJeu.remove(x);
+                        ok = true;
+                        break;
+                    }
+                }
+
+
+                if(ok == false){
+                    y++;
+                }
+            }
+
+            this.joueurCourant.addDestinationListCardToListPlayer(destinationPlayer);
         }
 
         //LANCEMENT DU JEU
@@ -571,6 +592,7 @@ public class Jeu implements Runnable {
         res.add(this.piocherDestination());
 
         this.joueurCourant.choisirDestination(res);
+        this.joueurCourant.addDestinationListCardToListPlayer(res);
     }
 
     public static String DEVPREFIX = "<strong><p style='color: red'>MILLANR-TREGUIERE/DEVELOPPEMENT</p></strong> ";
