@@ -565,17 +565,12 @@ public class Jeu implements Runnable {
     public void jouerTourPiocherDestination(){
         //piocher 3 et en garder au moins 1 et défausser 2 max pas obliger donc fin liste
         ArrayList<Destination> res = new ArrayList<Destination>();
-        Destination d1 = this.piocherDestination();
-        Destination d2 = this.piocherDestination();
-        Destination d3 = this.piocherDestination();
-        res.add(d1);
-        res.add(d2);
-        res.add(d3);
+
+        res.add(this.piocherDestination());
+        res.add(this.piocherDestination());
+        res.add(this.piocherDestination());
+
         this.joueurCourant.choisirDestination(res);
-
-
-
-
     }
 
     public static String DEVPREFIX = "<strong><p style='color: red'>MILLANR-TREGUIERE/DEVELOPPEMENT</p></strong> ";
