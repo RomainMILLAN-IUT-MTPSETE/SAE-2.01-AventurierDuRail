@@ -178,27 +178,6 @@ public class Jeu implements Runnable {
                 }
 
             }
-
-            int y=0;
-            while(y<destinationPlayer.size()){
-                boolean ok = false;
-
-                for(int x=0; x<aRemettreDansLeJeu.size(); x++){
-                    if(destinationPlayer.get(y).getNom().equalsIgnoreCase(aRemettreDansLeJeu.get(x).getNom())){
-                        destinationPlayer.remove(y);
-                        aRemettreDansLeJeu.remove(x);
-                        ok = true;
-                        break;
-                    }
-                }
-
-
-                if(ok == false){
-                    y++;
-                }
-            }
-
-            this.joueurCourant.addDestinationListCardToListPlayer(destinationPlayer);
         }
 
         //LANCEMENT DU JEU
@@ -567,12 +546,21 @@ public class Jeu implements Runnable {
         }
     }
 
+    public void deleteCarteWagonVisible(CouleurWagon wagonToDelete){
+        for(int i=0; i<this.cartesWagonVisibles.size(); i++){
+            if(this.cartesWagonVisibles.get(i).equals(wagonToDelete)){
+                this.cartesWagonVisibles.remove(i);
+                break;
+            }
+        }
+    }
+
 
     /**
      * Piocher Carte fonction jouerTour().
      */
     public void jouerTourPiocheWagonVisible(){
-        ArrayList<CouleurWagon> res = this.joueurCourant.choisirCarteWagonVisible(this.cartesWagonVisibles);
+        /*ArrayList<CouleurWagon> res = this.joueurCourant.choisirCarteWagonVisible(this.cartesWagonVisibles);
 
         for(int i=0; i<res.size(); i++){
             this.joueurCourant.ajouterCarteWagonDansMainJoueur(res.get(i));
@@ -580,17 +568,7 @@ public class Jeu implements Runnable {
             log("<strong>" + this.joueurCourant.getNom() + "</strong> à piocher une carte wagon de couleur " + res.get(i).toString());
         }
 
-        this.resetCarteWagonVisible();
-    }
-
-    public void jouerTourPiocherWagon(){
-        //A voir avec le prof
-        CouleurWagon w1 = this.piocherCarteWagon();
-        CouleurWagon w2 = this.piocherCarteWagon();
-        this.joueurCourant.ajouterCarteWagonDansMainJoueur(w1);
-        this.joueurCourant.ajouterCarteWagonDansMainJoueur(w2);
-
-        log("<strong>" + this.joueurCourant.getNom() + "</strong>, à piocher 2 cartes wagons.");
+        this.resetCarteWagonVisible();*/
     }
 
     public void jouerTourPiocherDestination(){
