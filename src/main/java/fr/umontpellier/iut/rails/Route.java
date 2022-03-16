@@ -90,4 +90,20 @@ public class Route {
         }
         return data;
     }
+
+    public boolean estFerry(){
+        boolean res = false;
+
+        res = this.getClass().equals((new Ferry(new Ville("nom"), new Ville("nom"), 1, CouleurWagon.ROUGE, 3)).getClass());
+
+        return res;
+    }
+
+    public boolean estTunnel(){
+        boolean res = false;
+
+        res = this.getClass().equals((new Tunnel(new Ville("nom"), new Ville("nom"), 1, CouleurWagon.ROUGE)).getClass());
+
+        return res;
+    }
 }

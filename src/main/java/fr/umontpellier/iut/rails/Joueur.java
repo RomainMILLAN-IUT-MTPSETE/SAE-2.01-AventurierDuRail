@@ -318,6 +318,9 @@ public class Joueur {
         for(int i=0; i<this.jeu.getVilles().size(); i++){
             others.add(this.jeu.getVilles().get(i).getNom());
         }
+        for(int i=0; i<this.jeu.getRoutes().size(); i++){
+            others.add(this.jeu.getRoutes().get(i).getNom());
+        }
         String choix = this.choisir(
                 "Choissisez l'action à effectué.", // instruction
                 others, // choix (hors boutons, ici aucun)
@@ -353,6 +356,11 @@ public class Joueur {
         ArrayList<String> villesSelect = new ArrayList<>();
         for(int i=0; i<this.jeu.getVilles().size(); i++){
             villesSelect.add(this.jeu.getVilles().get(i).getNom());
+        }
+
+        ArrayList<String> routeSelect = new ArrayList<>();
+        for(int i=0; i<this.jeu.getRoutes().size(); i++){
+            routeSelect.add(this.jeu.getRoutes().get(i).getNom());
         }
 
         if(choix.equalsIgnoreCase("destinations")){
@@ -670,6 +678,155 @@ public class Joueur {
                     this.jouerTour();
                 }
             }
+        }else if(routeSelect.contains(choix)){
+            Route routeChoisi = null;
+
+            for(int i=0; i<this.jeu.getRoutes().size(); i++){
+                if(this.jeu.getRoutes().get(i).getNom().equalsIgnoreCase(choix)){
+                    routeChoisi = this.jeu.getRoutes().get(i);
+                    break;
+                }
+            }
+
+            if(routeChoisi.getCouleur().equals(CouleurWagon.GRIS)){
+                if(this.cartesWagon.size() >= routeChoisi.getLongueur()){
+
+                    if(routeChoisi.estFerry() == true){
+
+                    }else if(routeChoisi.estTunnel() == true){
+
+                    }else {
+                        int x = 0;
+
+                        ArrayList<String> listWagonJoueur = new ArrayList();
+                        ArrayList<CouleurWagon> toCheck = new ArrayList<>();
+                        for(int i=0; i<this.cartesWagon.size(); i++){
+                            listWagonJoueur.add(this.cartesWagon.get(i).toString());
+                        }
+
+                        while(x < routeChoisi.getLongueur()){
+                            String choixWagons = this.choisir("Choissisez les cartes à défausser.", new ArrayList<>(), listWagonJoueur,false);
+
+                            for(int i=0; i<listWagonJoueur.size(); i++){
+                                if(listWagonJoueur.get(i).equalsIgnoreCase(choixWagons)){
+                                    listWagonJoueur.remove(i);
+                                    break;
+                                }
+                            }
+
+                            for(int i=0; i<this.cartesWagon.size(); i++){
+                                if(this.cartesWagon.get(i).toString().equalsIgnoreCase(choixWagons)){
+                                    toCheck.add(this.cartesWagon.get(i));
+                                    break;
+                                }
+                            }
+
+                            x++;
+                        }
+
+                        if(x == routeChoisi.getLongueur()){
+                            int k=0;
+                            for(int i=0; i<toCheck.size(); i++){
+                                int j=0;
+                                boolean find=false;
+
+                                while(j<this.cartesWagon.size() && find==false){
+                                    if(this.cartesWagon.get(j).equals(toCheck.get(i))){
+                                        this.jeu.defausserCarteWagon(this.cartesWagon.get(j));
+                                        this.cartesWagon.remove(j);
+                                        find = true;
+                                    }
+                                }
+                            }
+
+                            routeChoisi.setProprietaire(this);
+                        }else {
+                            log("ERREUR, nombre de carte invalide");
+                            this.jouerTour();
+                        }
+                    }
+
+                    if(routeChoisi.getLongueur() == 1){
+                        this.score += 1;
+                    }else if(routeChoisi.getLongueur() == 2){
+                        this.score += 2;
+                    }else if(routeChoisi.getLongueur() == 3){
+                        this.score += 4;
+                    }else if(routeChoisi.getLongueur() == 4){
+                        this.score += 7;
+                    }else if(routeChoisi.getLongueur() == 5){
+                        this.score += 15;
+                    }else if(routeChoisi.getLongueur() == 6){
+                        this.score += 21;
+                    }
+
+                }else {
+                    this.jeu.log("ERREUR, nombre de wagon invalide !");
+                    this.jouerTour();
+                }
+            }else {
+                int nbLoco = this.getNbWagonByCoul(CouleurWagon.LOCOMOTIVE);
+
+                int choixLocoNb = 0;
+                if(nbLoco > 0){
+                    ArrayList<String> nbDeLoco = new ArrayList<>();
+                    nbDeLoco.add("0");
+                    for(int i=1; i<=nbLoco; i++){
+                        nbDeLoco.add(String.valueOf(i));
+                    }
+                    choixLocoNb = Integer.parseInt(this.choisir("Choissisez l'action à effectué.", new ArrayList<>(), nbDeLoco,false));
+                }
+                if(routeChoisi.getLongueur()-choixLocoNb <= this.getNbWagonByCoul(routeChoisi.getCouleur())){
+                    if(routeChoisi.estFerry() == true){
+
+                    }else if(routeChoisi.estTunnel() == true){
+
+                    }else {
+                        routeChoisi.setProprietaire(this);
+                        int nbWagonCoul = routeChoisi.getLongueur() - choixLocoNb;
+                        int x = 0;
+                        int comptCoulWagon = 0;
+                        int comptCoulLoco = 0;
+                        while(x < this.cartesWagon.size() && comptCoulWagon<nbWagonCoul){
+
+                            if(this.cartesWagon.get(x).equals(routeChoisi.getCouleur())){
+                                this.cartesWagon.remove(x);
+                                comptCoulWagon++;
+                                x=0;
+                            }
+
+                            if(this.cartesWagon.get(x).equals(CouleurWagon.LOCOMOTIVE)){
+                                this.cartesWagon.remove(x);
+                                comptCoulLoco++;
+                                x=0;
+                            }
+
+                            x++;
+                        }
+
+                    }
+
+                    if(routeChoisi.getLongueur() == 1){
+                        this.score += 1;
+                    }else if(routeChoisi.getLongueur() == 2){
+                        this.score += 2;
+                    }else if(routeChoisi.getLongueur() == 3){
+                        this.score += 4;
+                    }else if(routeChoisi.getLongueur() == 4){
+                        this.score += 7;
+                    }else if(routeChoisi.getLongueur() == 5){
+                        this.score += 15;
+                    }else if(routeChoisi.getLongueur() == 6){
+                        this.score += 21;
+                    }
+                }else {
+                    this.jeu.log("ERREUR, nombre de wagon invalide !");
+                    this.jouerTour();
+                }
+            }
+
+
+
         }
 
 
@@ -686,6 +843,18 @@ public class Joueur {
 
     public void addDestinationCardToListPlayer(Destination destination){
         this.destinations.add(destination);
+    }
+
+    public int getNbWagonByCoul(CouleurWagon coul){
+        int res = 0;
+
+        for(int i=0; i<this.cartesWagon.size(); i++){
+            if(this.cartesWagon.get(i).toString().equalsIgnoreCase(coul.toString())){
+                res++;
+            }
+        }
+
+        return res;
     }
 
     /*public ArrayList<CouleurWagon> choisirCarteWagonVisible(List<CouleurWagon> listWagonVisible){

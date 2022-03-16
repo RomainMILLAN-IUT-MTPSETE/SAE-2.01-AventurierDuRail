@@ -17,4 +17,7 @@ public class Ferry extends Route {
                 nbLocomotives);
     }
 
+    public int getNbLocomotives() {
+        return nbLocomotives;
+    }
 }
