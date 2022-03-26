@@ -169,15 +169,7 @@ public class Jeu implements Runnable {
                 destinationPlayer.add(destinationToCopieCardNormal.get(j));
             }
 
-            List<Destination> aRemettreDansLeJeu = joueurs.get(i).choisirDestinations(destinationPlayer, 2);
-            for(int x=0; x<aRemettreDansLeJeu.size(); x++){
-
-                if(aRemettreDansLeJeu.get(x).getValeur() < 14){
-                    //Destination Courte donc on remet dans le jeu
-                    this.pileDestinations.add(aRemettreDansLeJeu.get(x));
-                }
-
-            }
+            List<Destination> aSupprimer = joueurs.get(i).choisirDestinations(destinationPlayer, 2);
         }
 
         //LANCEMENT DU JEU
