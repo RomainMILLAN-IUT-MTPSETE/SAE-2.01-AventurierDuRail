@@ -670,7 +670,6 @@ public class Joueur {
                     }
 
 
-                    //////
                     this.nbGares = 1;
 
                 }else {
