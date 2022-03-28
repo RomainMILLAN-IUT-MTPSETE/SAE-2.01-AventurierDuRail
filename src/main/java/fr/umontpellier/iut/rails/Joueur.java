@@ -774,7 +774,7 @@ public class Joueur {
                     for(int i=1; i<=nbLoco; i++){
                         nbDeLoco.add(String.valueOf(i));
                     }
-                    choixLocoNb = Integer.parseInt(this.choisir("Choissisez l'action à effectué.", new ArrayList<>(), nbDeLoco,false));
+                    choixLocoNb = Integer.parseInt(this.choisir("Chossisez le nombre de Locomotive à défausser.", new ArrayList<>(), nbDeLoco,false));
                 }
                 if(routeChoisi.getLongueur()-choixLocoNb <= this.getNbWagonByCoul(routeChoisi.getCouleur())){
                     if(routeChoisi.estFerry() == true){
@@ -782,6 +782,7 @@ public class Joueur {
                     }else if(routeChoisi.estTunnel() == true){
 
                     }else {
+                        //ROUTE NORMALE
                         routeChoisi.setProprietaire(this);
                         int nbWagonCoul = routeChoisi.getLongueur() - choixLocoNb;
                         int x = 0;
