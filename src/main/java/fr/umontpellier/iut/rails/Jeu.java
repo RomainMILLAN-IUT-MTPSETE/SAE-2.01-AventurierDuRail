@@ -510,7 +510,7 @@ public class Jeu implements Runnable {
     }
 
     /**
-     * Reset toutes les cartes wagon face visible
+     * Remet 5 nouvelles cartes dans les wagon visibles
      */
     public void resetAllCarteWagonVisible(){
         int carteWagonVisibleSizeFirst = this.cartesWagonVisibles.size();
@@ -545,22 +545,6 @@ public class Jeu implements Runnable {
                 break;
             }
         }
-    }
-
-
-    /**
-     * Piocher Carte fonction jouerTour().
-     */
-    public void jouerTourPiocheWagonVisible(){
-        /*ArrayList<CouleurWagon> res = this.joueurCourant.choisirCarteWagonVisible(this.cartesWagonVisibles);
-
-        for(int i=0; i<res.size(); i++){
-            this.joueurCourant.ajouterCarteWagonDansMainJoueur(res.get(i));
-            this.retirerCarteWagonVisible(res.get(i));
-            log("<strong>" + this.joueurCourant.getNom() + "</strong> à piocher une carte wagon de couleur " + res.get(i).toString());
-        }
-
-        this.resetCarteWagonVisible();*/
     }
 
     public void jouerTourPiocherDestination(){
