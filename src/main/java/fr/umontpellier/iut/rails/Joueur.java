@@ -370,7 +370,7 @@ public class Joueur {
             for(int i=0; i<this.jeu.getCartesWagonVisibles().size(); i++){
                 if(this.jeu.getCartesWagonVisibles().get(i).toString().toUpperCase().equalsIgnoreCase(choix)){
                     this.cartesWagon.add(this.jeu.getCartesWagonVisibles().get(i));
-                    this.jeu.deleteCarteWagonVisible(this.jeu.getCartesWagonVisibles().get(i));
+                    this.jeu.retirerCarteWagonVisible(this.jeu.getCartesWagonVisibles().get(i));
                     break;
                 }
             }
@@ -390,7 +390,7 @@ public class Joueur {
                     for(int i=0; i<this.jeu.getCartesWagonVisibles().size(); i++){
                         if(this.jeu.getCartesWagonVisibles().get(i).toString().toUpperCase().equalsIgnoreCase(choix)){
                             this.cartesWagon.add(this.jeu.getCartesWagonVisibles().get(i));
-                            this.jeu.deleteCarteWagonVisible(this.jeu.getCartesWagonVisibles().get(i));
+                            this.jeu.retirerCarteWagonVisible(this.jeu.getCartesWagonVisibles().get(i));
                             break;
                         }
                     }
@@ -745,20 +745,7 @@ public class Joueur {
                         }
                     }
 
-                    if(routeChoisi.getLongueur() == 1){
-                        this.score += 1;
-                    }else if(routeChoisi.getLongueur() == 2){
-                        this.score += 2;
-                    }else if(routeChoisi.getLongueur() == 3){
-                        this.score += 4;
-                    }else if(routeChoisi.getLongueur() == 4){
-                        this.score += 7;
-                    }else if(routeChoisi.getLongueur() == 5){
-                        this.score += 15;
-                    }else if(routeChoisi.getLongueur() == 6){
-                        this.score += 21;
-                    }
-
+                    this.addScoreEnFonctionDeRoute(routeChoisi);
                 }else {
                     this.jeu.log("ERREUR, nombre de wagon invalide !");
                     this.jouerTour();
@@ -806,19 +793,7 @@ public class Joueur {
 
                     }
 
-                    if(routeChoisi.getLongueur() == 1){
-                        this.score += 1;
-                    }else if(routeChoisi.getLongueur() == 2){
-                        this.score += 2;
-                    }else if(routeChoisi.getLongueur() == 3){
-                        this.score += 4;
-                    }else if(routeChoisi.getLongueur() == 4){
-                        this.score += 7;
-                    }else if(routeChoisi.getLongueur() == 5){
-                        this.score += 15;
-                    }else if(routeChoisi.getLongueur() == 6){
-                        this.score += 21;
-                    }
+                    this.addScoreEnFonctionDeRoute(routeChoisi);
                 }else {
                     this.jeu.log("ERREUR, nombre de wagon invalide !");
                     this.jouerTour();
@@ -835,6 +810,22 @@ public class Joueur {
     /**
      * PERSONNEL
      */
+    public void addScoreEnFonctionDeRoute(Route routeChosis){
+        if(routeChosis.getLongueur() == 1){
+            this.score += 1;
+        }else if(routeChosis.getLongueur() == 2){
+            this.score += 2;
+        }else if(routeChosis.getLongueur() == 3){
+            this.score += 4;
+        }else if(routeChosis.getLongueur() == 4){
+            this.score += 7;
+        }else if(routeChosis.getLongueur() == 5){
+            this.score += 15;
+        }else if(routeChosis.getLongueur() == 6){
+            this.score += 21;
+        }
+    }
+
     public void addDestinationListCardToListPlayer(List<Destination> destination){
         for(int i=0; i<destination.size(); i++){
             this.destinations.add(destination.get(i));
