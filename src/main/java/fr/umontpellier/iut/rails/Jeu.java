@@ -538,6 +538,10 @@ public class Jeu implements Runnable {
         }
     }
 
+    /**
+     * Suppression d'une carte wagon dans la pile des wagon visible
+     * @param wagonToDelete
+     */
     public void deleteCarteWagonVisible(CouleurWagon wagonToDelete){
         for(int i=0; i<this.cartesWagonVisibles.size(); i++){
             if(this.cartesWagonVisibles.get(i).equals(wagonToDelete)){
@@ -547,6 +551,9 @@ public class Jeu implements Runnable {
         }
     }
 
+    /**
+     * Fonction qui permet de piocher des Destinations dans jouerTour()
+     */
     public void jouerTourPiocherDestination(){
         //piocher 3 et en garder au moins 1 et défausser 2 max pas obliger donc fin liste
         ArrayList<Destination> res = new ArrayList<Destination>();
@@ -558,10 +565,6 @@ public class Jeu implements Runnable {
         ArrayList<Destination> finalRes = this.joueurCourant.choisirDestination(res);
         this.joueurCourant.addDestinationListCardToListPlayer(finalRes);
         log("<strong>" + this.joueurCourant.getNom() + "</strong>, à piocher " + finalRes.size() + " cartes destinations");
-    }
-
-    public void jouerTourPoserRoute(){
-
     }
 
     public static String DEVPREFIX = "<strong><p style='color: red'>MILLANR-TREGUIERE/DEVELOPPEMENT</p></strong> ";
