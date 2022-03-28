@@ -363,10 +363,16 @@ public class Joueur {
             routeSelect.add(this.jeu.getRoutes().get(i).getNom());
         }
 
+
+
+
+
+        //CHOISI: DESTINATION
         if(choix.equalsIgnoreCase("destinations")){
             this.jeu.jouerTourPiocherDestination();
             this.jeu.log("<strong>" + this.getNom() + "</strong>, à piocher des cartes destinations.");
         }else if(wagonVisibleSelect.contains(choix)){
+            //CHOISI: WAGON VISIBLE
             for(int i=0; i<this.jeu.getCartesWagonVisibles().size(); i++){
                 if(this.jeu.getCartesWagonVisibles().get(i).toString().toUpperCase().equalsIgnoreCase(choix)){
                     this.cartesWagon.add(this.jeu.getCartesWagonVisibles().get(i));
@@ -400,6 +406,7 @@ public class Joueur {
             this.jeu.resetCarteWagonVisible();
             this.jeu.log("<strong>" + this.getNom() + "</strong>, à piocher des wagons.");
         }else if(choix.equalsIgnoreCase(CouleurWagon.GRIS.toString())){
+            //CHOISI: WAGON NON VISIBLE
             CouleurWagon w1 = this.jeu.piocherCarteWagon();
             CouleurWagon w2 = this.jeu.piocherCarteWagon();
             this.ajouterCarteWagonDansMainJoueur(w1);
@@ -407,6 +414,7 @@ public class Joueur {
 
             this.jeu.log("<strong>" + this.getNom() + "</strong>, à piocher 2 cartes wagons.");
         }else if(villesSelect.contains(choix)){
+            //CHOISI: GARE
             Ville villeChoisis = null;
             for(int i=0; i<this.jeu.getVilles().size(); i++){
                 if(this.jeu.getVilles().get(i).toString().equalsIgnoreCase(choix)){
@@ -678,6 +686,7 @@ public class Joueur {
                 }
             }
         }else if(routeSelect.contains(choix)){
+            //CHOISI: ROUTE
             Route routeChoisi = null;
 
             for(int i=0; i<this.jeu.getRoutes().size(); i++){
