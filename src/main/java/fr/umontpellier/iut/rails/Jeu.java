@@ -296,41 +296,16 @@ public class Jeu implements Runnable {
     }
 
     /**
-     * Retire une carte wwagon de la pile des cartes wagon visibles.
+     * Retire une carte wagon de la pile des cartes wagon visibles.
      * Si une carte a été retirée, la pile de cartes wagons visibles est recomplétée
      * (remise à 5, éventuellement remélangée si 3 locomotives visibles)
      */
     public void retirerCarteWagonVisible(CouleurWagon c){
         this.cartesWagonVisibles.remove(c);
 
-        if(this.cartesWagonVisibles.size() < 5){
-            for(int i=0; i<this.cartesWagonVisibles.size(); i++){
-                CouleurWagon x = this.pileCartesWagon.get(0);
-                this.pileCartesWagon.remove(0);
-            }
+        //J'utilise une autre fonction que j'avais crée avant pour regarder si il y a + de 3 locomotive et ajouter le reste des cartes
+        this.resetCarteWagonVisible();
 
-            int locoCarteVisible = 0;
-
-            do{
-                locoCarteVisible = 0;
-                for(int i=0; i<this.cartesWagonVisibles.size(); i++){
-                    if(this.cartesWagonVisibles.get(i) == CouleurWagon.LOCOMOTIVE){
-                        locoCarteVisible++;
-                    }
-                }
-
-                if(locoCarteVisible >= 3){
-                    for(int i=0; i<this.cartesWagonVisibles.size(); i++){
-                        this.cartesWagonVisibles.remove(0);
-                    }
-
-                    for(int i=0; i<5; i++){
-                        this.cartesWagonVisibles.add(this.piocherCarteWagon());
-                    }
-                }
-
-            }while(locoCarteVisible >= 3);
-        }
     }
 
     /**
@@ -352,8 +327,6 @@ public class Jeu implements Runnable {
 
         return d;
     }
-
-
 
     public List<Joueur> getJoueurs() {
         return joueurs;
@@ -535,19 +508,6 @@ public class Jeu implements Runnable {
             this.resetAllCarteWagonVisible();
         }else {
             log("Reset de <strong>TOUTES</strong> les cartes wagon visibles.");
-        }
-    }
-
-    /**
-     * Suppression d'une carte wagon dans la pile des wagon visible
-     * @param wagonToDelete
-     */
-    public void deleteCarteWagonVisible(CouleurWagon wagonToDelete){
-        for(int i=0; i<this.cartesWagonVisibles.size(); i++){
-            if(this.cartesWagonVisibles.get(i).equals(wagonToDelete)){
-                this.cartesWagonVisibles.remove(i);
-                break;
-            }
         }
     }
 
