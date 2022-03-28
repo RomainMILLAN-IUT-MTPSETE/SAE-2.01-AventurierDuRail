@@ -342,16 +342,12 @@ public class Joueur {
             System.out.println("ERROR");
         }*/
 
-        ArrayList<String> wagonVisibleSelect = new ArrayList();
-        wagonVisibleSelect.add(CouleurWagon.LOCOMOTIVE.toString().toUpperCase());
-        wagonVisibleSelect.add(CouleurWagon.ROSE.toString().toUpperCase());
-        wagonVisibleSelect.add(CouleurWagon.BLANC.toString().toUpperCase());
-        wagonVisibleSelect.add(CouleurWagon.BLEU.toString().toUpperCase());
-        wagonVisibleSelect.add(CouleurWagon.JAUNE.toString().toUpperCase());
-        wagonVisibleSelect.add(CouleurWagon.ORANGE.toString().toUpperCase());
-        wagonVisibleSelect.add(CouleurWagon.NOIR.toString().toUpperCase());
-        wagonVisibleSelect.add(CouleurWagon.ROUGE.toString().toUpperCase());
-        wagonVisibleSelect.add(CouleurWagon.VERT.toString().toUpperCase());
+        ArrayList<String> wagonVisibleString = new ArrayList<>();
+        ArrayList<CouleurWagon> wagonVisible = new ArrayList<>();
+        for(CouleurWagon cw : this.jeu.getCartesWagonVisibles()){
+            wagonVisible.add(cw);
+            wagonVisibleString.add(cw.toString().toUpperCase());
+        }
 
         ArrayList<String> villesSelect = new ArrayList<>();
         for(int i=0; i<this.jeu.getVilles().size(); i++){
@@ -371,9 +367,64 @@ public class Joueur {
         if(choix.equalsIgnoreCase("destinations")){
             this.jeu.jouerTourPiocherDestination();
             this.jeu.log("<strong>" + this.getNom() + "</strong>, à piocher des cartes destinations.");
-        }else if(wagonVisibleSelect.contains(choix)){
+        }else if(wagonVisibleString.contains(choix) || choix.equalsIgnoreCase(CouleurWagon.GRIS.toString())){
+            if(wagonVisibleString.contains(choix)){
+                //1er carte wagon VISIBLE
+                if(choix.equalsIgnoreCase(CouleurWagon.LOCOMOTIVE.toString())){
+                    //1 seule carte à piocher
+                    this.jeu.retirerCarteWagonVisible(CouleurWagon.LOCOMOTIVE);
+                    this.cartesWagon.add(CouleurWagon.LOCOMOTIVE);
+                    this.nbWagons++;
+                }else {
+                    //2 cartes à piocher
+                    for(int i=0; i<wagonVisible.size(); i++){
+                        if(wagonVisible.get(i).toString().equalsIgnoreCase(choix)){
+                            this.cartesWagon.add(wagonVisible.get(i));
+                            wagonVisible.remove(i);
+                            break;
+                        }
+                    }
+                    this.nbWagons++;
+                    wagonVisible.remove(choix);
+
+                    //2EME CHOIX
+                    ArrayList<String> deuxiemeChoixAL = new ArrayList<>();
+                    deuxiemeChoixAL.addAll(wagonVisibleString);
+                    deuxiemeChoixAL.add(CouleurWagon.GRIS.toString().toUpperCase());
+                    String deuxiemeChoixCarteWagon = this.choisir(
+                            "Choissisez l'autre carte Wagon.", // instruction
+                            deuxiemeChoixAL, // choix (hors boutons, ici aucun)
+                            new ArrayList<>(),
+                            true);
+
+                    //Si la carte selectionner est une LOCOMOTIVE & elle n'est pas contenue dans les cartes visibles et grises && elle ce n'est pas passer alors:
+                    while(deuxiemeChoixCarteWagon.equalsIgnoreCase(CouleurWagon.LOCOMOTIVE.toString()) || !wagonVisible.contains(deuxiemeChoixCarteWagon) || !choix.equalsIgnoreCase("")){
+                        deuxiemeChoixCarteWagon = this.choisir(
+                                "Choissisez l'autre carte Wagon.", // instruction
+                                deuxiemeChoixAL, // choix (hors boutons, ici aucun)
+                                new ArrayList<>(),
+                                true);
+                    }
+
+                    if(wagonVisible.contains(choix)){
+                        //2eme carte wagon VISIBLE
+                        //this.cartesWagon.add(CouleurWagon.valueOf(wagonVisible.get(Integer.parseInt(choix))));
+                        //this.jeu.retirerCarteWagonVisible(CouleurWagon.valueOf(wagonVisible.get(Integer.parseInt(choix))));
+                        this.nbWagons++;
+                    }else if(choix.equalsIgnoreCase(CouleurWagon.GRIS.toString())) {
+                        //2eme carte wagon NON VISIBLE
+                        this.cartesWagon.add(this.jeu.piocherCarteWagon());
+                        this.nbWagons++;
+                    }
+                }
+            }else {
+                //1er Carte NON VISIBLE
+                this.cartesWagon.add(this.jeu.piocherCarteWagon());
+                this.nbWagons++;
+            }
+
             //CHOISI: WAGON VISIBLE
-            for(int i=0; i<this.jeu.getCartesWagonVisibles().size(); i++){
+            /*for(int i=0; i<this.jeu.getCartesWagonVisibles().size(); i++){
                 if(this.jeu.getCartesWagonVisibles().get(i).toString().toUpperCase().equalsIgnoreCase(choix)){
                     this.cartesWagon.add(this.jeu.getCartesWagonVisibles().get(i));
                     this.jeu.retirerCarteWagonVisible(this.jeu.getCartesWagonVisibles().get(i));
@@ -405,14 +456,16 @@ public class Joueur {
             }
             this.jeu.resetCarteWagonVisible();
             this.jeu.log("<strong>" + this.getNom() + "</strong>, à piocher des wagons.");
-        }else if(choix.equalsIgnoreCase(CouleurWagon.GRIS.toString())){
+
+
             //CHOISI: WAGON NON VISIBLE
             CouleurWagon w1 = this.jeu.piocherCarteWagon();
             CouleurWagon w2 = this.jeu.piocherCarteWagon();
             this.ajouterCarteWagonDansMainJoueur(w1);
             this.ajouterCarteWagonDansMainJoueur(w2);
 
-            this.jeu.log("<strong>" + this.getNom() + "</strong>, à piocher 2 cartes wagons.");
+            this.jeu.log("<strong>" + this.getNom() + "</strong>, à piocher 2 cartes wagons.");*/
+
         }else if(villesSelect.contains(choix)){
             //CHOISI: GARE
             Ville villeChoisis = null;
@@ -875,11 +928,6 @@ public class Joueur {
 
         return resultat;
     }*/
-
-    public void ajouterCarteWagonDansMainJoueur(CouleurWagon wagonColor){
-        this.cartesWagon.add(wagonColor);
-        this.nbWagons++;
-    }
 
     public ArrayList<Destination> choisirDestination(ArrayList<Destination> listDestination){
         ArrayList<Destination> resultat = new ArrayList<>();
