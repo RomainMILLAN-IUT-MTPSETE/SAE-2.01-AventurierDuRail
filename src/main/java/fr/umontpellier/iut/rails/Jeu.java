@@ -255,9 +255,7 @@ public class Jeu implements Runnable {
     public void defausserCarteWagon(CouleurWagon c) {
 
         if(cartesWagonVisibles.size()<5){
-            for(int i=0; i<5-cartesWagonVisibles.size(); i++){
-                cartesWagonVisibles.add(c);
-            }
+            cartesWagonVisibles.add(c);
         }
 
         defausseCartesWagon.add(c);
