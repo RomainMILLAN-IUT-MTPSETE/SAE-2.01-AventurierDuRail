@@ -395,96 +395,21 @@ public class Joueur {
                     if(cwToRemove != null){
                         this.jeu.retirerCarteWagonVisible(cwToRemove);
 
-                        //2EME CHOIX
-                        ArrayList<String> deuxiemeChoixAL = new ArrayList<>();
-                        deuxiemeChoixAL.addAll(wagonVisibleString);
-                        deuxiemeChoixAL.add(CouleurWagon.GRIS.toString().toUpperCase());
-                        String deuxiemeChoixCarteWagon = this.choisir(
-                                "Choissisez l'autre carte Wagon.", // instruction
-                                deuxiemeChoixAL, // choix (hors boutons, ici aucun)
-                                new ArrayList<>(),
-                                true);
-
-                        //Si le joueur n'as pas choisis une carte face cachée
-                        if(!deuxiemeChoixCarteWagon.equalsIgnoreCase(CouleurWagon.GRIS.toString()) && !deuxiemeChoixCarteWagon.equalsIgnoreCase("")){
-                            //Si la carte selectionner est une LOCOMOTIVE & elle n'est pas contenue dans les cartes visibles et grises && elle ce n'est pas passer alors:
-                            while(deuxiemeChoixCarteWagon.equalsIgnoreCase(CouleurWagon.LOCOMOTIVE.toString()) || !wagonVisibleString.contains(deuxiemeChoixCarteWagon)){
-                                deuxiemeChoixCarteWagon = this.choisir(
-                                        "Choissisez l'autre carte Wagon.", // instruction
-                                        deuxiemeChoixAL, // choix (hors boutons, ici aucun)
-                                        new ArrayList<>(),
-                                        true);
-                            }
-                        }
-
-
-                        if(wagonVisibleString.contains(deuxiemeChoixCarteWagon)){
-                            //2eme carte wagon VISIBLE
-                            for(int i=0; i<wagonVisible.size(); i++){
-                                if(wagonVisible.get(i).toString().equalsIgnoreCase(deuxiemeChoixCarteWagon)){
-                                    this.cartesWagon.add(wagonVisible.get(i));
-                                    this.jeu.retirerCarteWagonVisible(wagonVisible.get(i));
-                                    break;
-                                }
-                            }
-                            this.nbWagons++;
-                        }else if(deuxiemeChoixCarteWagon.equalsIgnoreCase(CouleurWagon.GRIS.toString())){
-                            //2eme carte wagon NON VISIBLE
-                            this.cartesWagon.add(this.jeu.piocherCarteWagon());
-                            this.nbWagons++;
-                        }
+                        this.secondTourDeSelectionCarteWagon(wagonVisibleString, wagonVisible);
                     }else {
                         this.jeu.log("ERROR: Cartes non visibles.");
                     }
                 }
             }else {
                 //1er Carte NON VISIBLE
-                this.cartesWagon.add(this.jeu.piocherCarteWagon());
+                CouleurWagon selectCardNotVisible = this.jeu.piocherCarteWagon();
+                this.cartesWagon.add(selectCardNotVisible);
                 this.nbWagons++;
-            }
 
-            //CHOISI: WAGON VISIBLE
-            /*for(int i=0; i<this.jeu.getCartesWagonVisibles().size(); i++){
-                if(this.jeu.getCartesWagonVisibles().get(i).toString().toUpperCase().equalsIgnoreCase(choix)){
-                    this.cartesWagon.add(this.jeu.getCartesWagonVisibles().get(i));
-                    this.jeu.retirerCarteWagonVisible(this.jeu.getCartesWagonVisibles().get(i));
-                    break;
+                if(!selectCardNotVisible.toString().equalsIgnoreCase(CouleurWagon.LOCOMOTIVE.toString())){
+                    this.secondTourDeSelectionCarteWagon(wagonVisibleString, wagonVisible);
                 }
             }
-            if(!choix.equalsIgnoreCase("Locomotive")){
-                List<String> boutons = new ArrayList<>();
-                ArrayList<CouleurWagon> resSelect = new ArrayList<>();
-                boolean stop = false;
-                for(int i=0; i<this.jeu.getCartesWagonVisibles().size(); i++){
-                    boutons.add(this.jeu.getCartesWagonVisibles().get(i).toString().toUpperCase());
-                }
-
-                do{
-                    choix = choisir("Choisissez une carte wagon.", boutons, new ArrayList<>(), true);
-                }while(choix.equalsIgnoreCase("Locomotive".toUpperCase()));
-
-                if(!choix.equalsIgnoreCase("")){
-                    for(int i=0; i<this.jeu.getCartesWagonVisibles().size(); i++){
-                        if(this.jeu.getCartesWagonVisibles().get(i).toString().toUpperCase().equalsIgnoreCase(choix)){
-                            this.cartesWagon.add(this.jeu.getCartesWagonVisibles().get(i));
-                            this.jeu.retirerCarteWagonVisible(this.jeu.getCartesWagonVisibles().get(i));
-                            break;
-                        }
-                    }
-                }
-
-            }
-            this.jeu.resetCarteWagonVisible();
-            this.jeu.log("<strong>" + this.getNom() + "</strong>, à piocher des wagons.");
-
-
-            //CHOISI: WAGON NON VISIBLE
-            CouleurWagon w1 = this.jeu.piocherCarteWagon();
-            CouleurWagon w2 = this.jeu.piocherCarteWagon();
-            this.ajouterCarteWagonDansMainJoueur(w1);
-            this.ajouterCarteWagonDansMainJoueur(w2);
-
-            this.jeu.log("<strong>" + this.getNom() + "</strong>, à piocher 2 cartes wagons.");*/
 
         }else if(villesSelect.contains(choix)){
             //CHOISI: GARE
@@ -1012,6 +937,54 @@ public class Joueur {
         }
 
         return max;
+    }
+
+    public void secondTourDeSelectionCarteWagon(ArrayList<String> wagonVisibleString, ArrayList<CouleurWagon> wagonVisible){
+        //2EME CHOIX
+        ArrayList<String> deuxiemeChoixAL = new ArrayList<>();
+        deuxiemeChoixAL.addAll(wagonVisibleString);
+        deuxiemeChoixAL.add(CouleurWagon.GRIS.toString().toUpperCase());
+        String deuxiemeChoixCarteWagon = this.choisir(
+                "Choissisez l'autre carte Wagon.", // instruction
+                deuxiemeChoixAL, // choix (hors boutons, ici aucun)
+                new ArrayList<>(),
+                true);
+
+        //Si le joueur n'as pas choisis une carte face cachée
+        if(!deuxiemeChoixCarteWagon.equalsIgnoreCase(CouleurWagon.GRIS.toString()) && !deuxiemeChoixCarteWagon.equalsIgnoreCase("")){
+            //Si la carte selectionner est une LOCOMOTIVE & elle n'est pas contenue dans les cartes visibles et grises && elle ce n'est pas passer alors:
+            while(deuxiemeChoixCarteWagon.equalsIgnoreCase(CouleurWagon.LOCOMOTIVE.toString()) || !wagonVisibleString.contains(deuxiemeChoixCarteWagon)){
+                deuxiemeChoixCarteWagon = this.choisir(
+                        "Choissisez l'autre carte Wagon.", // instruction
+                        deuxiemeChoixAL, // choix (hors boutons, ici aucun)
+                        new ArrayList<>(),
+                        true);
+            }
+        }
+
+
+        if(wagonVisibleString.contains(deuxiemeChoixCarteWagon)){
+            //2eme carte wagon VISIBLE
+            for(int i=0; i<wagonVisible.size(); i++){
+                if(wagonVisible.get(i).toString().equalsIgnoreCase(deuxiemeChoixCarteWagon)){
+                    this.cartesWagon.add(wagonVisible.get(i));
+                    this.jeu.retirerCarteWagonVisible(wagonVisible.get(i));
+                    break;
+                }
+            }
+            this.nbWagons++;
+        }else if(deuxiemeChoixCarteWagon.equalsIgnoreCase(CouleurWagon.GRIS.toString())){
+            //2eme carte wagon NON VISIBLE
+            CouleurWagon selectCardNotVisible = this.jeu.piocherCarteWagon();
+
+            while(selectCardNotVisible.toString().equalsIgnoreCase(CouleurWagon.LOCOMOTIVE.toString())){
+                this.jeu.defausserCarteWagon(selectCardNotVisible);
+                selectCardNotVisible = this.jeu.piocherCarteWagon();
+            }
+
+            this.cartesWagon.add(selectCardNotVisible);
+            this.nbWagons++;
+        }
     }
 
     public void jouerTourPoserGare(){
