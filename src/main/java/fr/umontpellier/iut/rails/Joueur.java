@@ -90,6 +90,10 @@ public class Joueur {
         return destinations;
     }
 
+    public int getNbGares() {
+        return nbGares;
+    }
+
     /**
      * Attend une entrée de la part du joueur (au clavier ou sur la websocket) et
      * renvoie le choix du joueur.
