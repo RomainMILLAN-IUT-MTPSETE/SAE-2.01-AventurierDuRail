@@ -123,6 +123,10 @@ public class Jeu implements Runnable {
         return cartesWagonVisibles;
     }
 
+    public List<Destination> getPileDestinations() { return pileDestinations; }
+
+    public List<CouleurWagon> getDefausseCartesWagon() { return defausseCartesWagon; }
+
     public List<Ville> getVilles() {
         return villes;
     }
