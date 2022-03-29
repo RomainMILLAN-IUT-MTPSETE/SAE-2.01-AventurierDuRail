@@ -526,6 +526,11 @@ public class Jeu implements Runnable {
 
         ArrayList<Destination> finalRes = this.joueurCourant.choisirDestination(res);
         this.joueurCourant.addDestinationListCardToListPlayer(finalRes);
+        for(Destination first : res){
+            if(!finalRes.contains(first)){
+                this.pileDestinations.add(first);
+            }
+        }
         log("<strong>" + this.joueurCourant.getNom() + "</strong>, à piocher " + finalRes.size() + " cartes destinations");
     }
 
