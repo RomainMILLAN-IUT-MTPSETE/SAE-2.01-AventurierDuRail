@@ -822,6 +822,200 @@ public class Joueur {
 
             }else if(routeChoisi.estTunnel() == true){
                 //TUNEL
+                routeChoisi = (Tunnel) routeChoisi;
+                
+                if(routeChoisi.getCouleur().equals(CouleurWagon.GRIS)){
+                    if(this.nbWagonMemeCouleurMax() + this.getNbWagonByCoul(CouleurWagon.LOCOMOTIVE) < routeChoisi.getLongueur()){
+                        this.jouerTour();
+                    }else {
+                        ArrayList<String> buttonStringCartWagonPlayer = new ArrayList<>();
+                        String colorToFillAll = "";
+                        do{
+                            buttonStringCartWagonPlayer.clear();
+                            String choixPlayer = "";
+                            boolean whileCheck = true;
+                            do {
+                                buttonStringCartWagonPlayer.clear();
+                                for(int i=0; i<this.cartesWagon.size(); i++){
+                                    buttonStringCartWagonPlayer.add(this.cartesWagon.get(i).toString().toUpperCase());
+                                }
+                                choixPlayer = this.choisir(
+                                        "Choissisez vos cartes.", // instruction
+                                        new ArrayList<>(), // choix (hors boutons, ici aucun)
+                                        buttonStringCartWagonPlayer,
+                                        true);//Le joueur ne peut pas passer.
+
+                                if (choixPlayer.equalsIgnoreCase("")){
+                                    for(int i=0; i<this.cartesWagonPosees.size(); i++){
+                                        this.cartesWagon.add(this.cartesWagonPosees.get(i));
+                                    }
+                                    this.cartesWagonPosees.clear();
+                                    this.jouerTour();
+                                }else {
+                                    if(!choixPlayer.equalsIgnoreCase(CouleurWagon.LOCOMOTIVE.toString())){
+                                        if(colorToFillAll.equalsIgnoreCase("")){
+                                            for(int i=0; i<this.cartesWagon.size(); i++){
+                                                if(this.cartesWagon.get(i).toString().equalsIgnoreCase(choixPlayer)){
+                                                    colorToFillAll = this.cartesWagon.get(i).toString().toUpperCase();
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    if(choixPlayer.equalsIgnoreCase(CouleurWagon.LOCOMOTIVE.toString().toUpperCase()) || choixPlayer.equalsIgnoreCase(colorToFillAll)){
+                                        whileCheck = false;
+                                    }
+                                }
+                            }while(whileCheck == true);
+
+                            for(int i=0; i<this.cartesWagon.size(); i++){
+                                if(this.cartesWagon.get(i).toString().equalsIgnoreCase(choixPlayer)){
+                                    this.cartesWagonPosees.add(this.cartesWagon.get(i));
+                                    this.cartesWagon.remove(i);
+                                    break;
+                                }
+                            }
+
+                        }while(this.cartesWagonPosees.size() < routeChoisi.getLongueur());
+
+                        //PARTIE SPECIAL TUNNEL
+                        //Calcul du nombre de carte à ajouter pour le joueur
+                        int nbCardToAdd = 0;
+                        for(int i=0; i<3; i++){
+                            CouleurWagon c = this.jeu.piocherCarteWagon();
+                            if(c.equals(routeChoisi.getCouleur())){
+                                nbCardToAdd++;
+                            }
+                            this.jeu.defausserCarteWagon(c);
+                        }
+
+                        while(this.cartesWagonPosees.size() < (routeChoisi.getLongueur() + nbCardToAdd)) {
+                            String choixPlayer = "";
+                            do{
+                                buttonStringCartWagonPlayer.clear();
+                                for(int i=0; i<this.cartesWagon.size(); i++){
+                                    buttonStringCartWagonPlayer.add(this.cartesWagon.get(i).toString().toUpperCase());
+                                }
+                                choixPlayer = this.choisir(
+                                        "Ajouter encore des cartes.", // instruction
+                                        new ArrayList<>(), // choix (hors boutons, ici aucun)
+                                        buttonStringCartWagonPlayer,
+                                        true);//Le joueur ne peut pas passer.
+
+                                if (choixPlayer.equalsIgnoreCase("")){
+                                    for(int i=0; i<this.cartesWagonPosees.size(); i++){
+                                        this.cartesWagon.add(this.cartesWagonPosees.get(i));
+                                    }
+                                    this.cartesWagonPosees.clear();
+                                    this.jouerTour();
+                                }
+                            }while(!choixPlayer.equalsIgnoreCase(colorToFillAll) && !choixPlayer.equalsIgnoreCase(CouleurWagon.LOCOMOTIVE.toString()));
+
+                            for(int i=0; i<this.cartesWagon.size(); i++){
+                                if(this.cartesWagon.get(i).toString().equalsIgnoreCase(choixPlayer)){
+                                    this.cartesWagonPosees.add(this.cartesWagon.get(i));
+                                    this.cartesWagon.remove(i);
+                                    break;
+                                }
+                            }
+                        }
+
+                        routeChoisi.setProprietaire(this);
+
+                        for(int j=0; j<this.cartesWagonPosees.size(); j++){
+                            this.jeu.defausserCarteWagon(this.cartesWagonPosees.get(j));
+                        }
+                        this.cartesWagonPosees.clear();
+                        this.addScoreEnFonctionDeRoute(routeChoisi);
+                    }
+                }else {
+                    if(this.getNbWagonByCoul(routeChoisi.getCouleur()) + this.getNbWagonByCoul(CouleurWagon.LOCOMOTIVE) < routeChoisi.getLongueur()){
+                        this.jouerTour();
+                    }else {
+                        ArrayList<String> buttonStringCartWagonPlayer = new ArrayList<>();
+                        do {
+                            String choixPlayer = "";
+                            do{
+                                buttonStringCartWagonPlayer.clear();
+                                for(int i=0; i<this.cartesWagon.size(); i++){
+                                    buttonStringCartWagonPlayer.add(this.cartesWagon.get(i).toString().toUpperCase());
+                                }
+                                choixPlayer = this.choisir(
+                                        "Choissisez vos cartes.", // instruction
+                                        new ArrayList<>(), // choix (hors boutons, ici aucun)
+                                        buttonStringCartWagonPlayer,
+                                        true);//Le joueur ne peut pas passer.
+
+                                if (choixPlayer.equalsIgnoreCase("")){
+                                    for(int i=0; i<this.cartesWagonPosees.size(); i++){
+                                        this.cartesWagon.add(this.cartesWagonPosees.get(i));
+                                    }
+                                    this.cartesWagonPosees.clear();
+                                    this.jouerTour();
+                                }
+                            }while(!choixPlayer.equalsIgnoreCase(routeChoisi.getCouleur().toString()) && !choixPlayer.equalsIgnoreCase(CouleurWagon.LOCOMOTIVE.toString()));
+
+                            for(int i=0; i<this.cartesWagon.size(); i++){
+                                if(this.cartesWagon.get(i).toString().equalsIgnoreCase(choixPlayer)){
+                                    this.cartesWagonPosees.add(this.cartesWagon.get(i));
+                                    this.cartesWagon.remove(i);
+                                    break;
+                                }
+                            }
+                        }while(this.cartesWagonPosees.size() < routeChoisi.getLongueur());
+
+                        //PARTIE SPECIAL TUNNEL
+                        //Calcul du nombre de carte à ajouter pour le joueur
+                        int nbCardToAdd = 0;
+                        for(int i=0; i<3; i++){
+                            CouleurWagon c = this.jeu.piocherCarteWagon();
+                            if(c.equals(routeChoisi.getCouleur())){
+                                nbCardToAdd++;
+                            }
+                            this.jeu.defausserCarteWagon(c);
+                        }
+
+                        while(this.cartesWagonPosees.size() < (routeChoisi.getLongueur() + nbCardToAdd)) {
+                            String choixPlayer = "";
+                            do{
+                                buttonStringCartWagonPlayer.clear();
+                                for(int i=0; i<this.cartesWagon.size(); i++){
+                                    buttonStringCartWagonPlayer.add(this.cartesWagon.get(i).toString().toUpperCase());
+                                }
+                                choixPlayer = this.choisir(
+                                        "Ajouter encore des cartes.", // instruction
+                                        new ArrayList<>(), // choix (hors boutons, ici aucun)
+                                        buttonStringCartWagonPlayer,
+                                        true);//Le joueur ne peut pas passer.
+
+                                if (choixPlayer.equalsIgnoreCase("")){
+                                    for(int i=0; i<this.cartesWagonPosees.size(); i++){
+                                        this.cartesWagon.add(this.cartesWagonPosees.get(i));
+                                    }
+                                    this.cartesWagonPosees.clear();
+                                    this.jouerTour();
+                                }
+                            }while(!choixPlayer.equalsIgnoreCase(routeChoisi.getCouleur().toString()) && !choixPlayer.equalsIgnoreCase(CouleurWagon.LOCOMOTIVE.toString()));
+
+                            for(int i=0; i<this.cartesWagon.size(); i++){
+                                if(this.cartesWagon.get(i).toString().equalsIgnoreCase(choixPlayer)){
+                                    this.cartesWagonPosees.add(this.cartesWagon.get(i));
+                                    this.cartesWagon.remove(i);
+                                    break;
+                                }
+                            }
+                        }
+
+                        routeChoisi.setProprietaire(this);
+
+                        for(int j=0; j<this.cartesWagonPosees.size(); j++){
+                            this.jeu.defausserCarteWagon(this.cartesWagonPosees.get(j));
+                        }
+                        this.cartesWagonPosees.clear();
+                        this.addScoreEnFonctionDeRoute(routeChoisi);
+                    }
+                }
             }else {
                 if(routeChoisi.getCouleur().equals(CouleurWagon.GRIS)){
                     //N'importe quel couleur !
