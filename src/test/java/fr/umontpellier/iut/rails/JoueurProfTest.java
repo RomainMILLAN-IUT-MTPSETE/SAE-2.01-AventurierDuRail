@@ -364,4 +364,38 @@ public class JoueurProfTest {
         assertEquals(1, joueur3.getNbGares());
     }
 
+    @Test
+    void jouerTourConstruireTroisGares() {
+        List<CouleurWagon> cartesWagon = joueur3.getCartesWagon();
+        cartesWagon.add(CouleurWagon.VERT);
+        cartesWagon.add(CouleurWagon.BLEU);
+        cartesWagon.add(CouleurWagon.BLEU);
+        cartesWagon.add(CouleurWagon.ROUGE);
+        cartesWagon.add(CouleurWagon.ROUGE);
+        cartesWagon.add(CouleurWagon.ORANGE);
+        cartesWagon.add(CouleurWagon.ORANGE);
+        cartesWagon.add(CouleurWagon.ORANGE);
+        cartesWagon.add(CouleurWagon.ORANGE);
+
+        jeu.setInput("Paris", "ROUGE"); // premier tour, constuit une gare pour 1 carte
+        joueur3.jouerTour();
+
+        jeu.setInput("Madrid", "ROUGE", "BLEU", "BLEU"); // 2e tour, une gare pour 2 cartes
+        joueur3.jouerTour();
+
+        jeu.setInput("Amsterdam", "VERT", "ORANGE", "ORANGE", "ROUGE", "ORANGE");
+        joueur3.jouerTour();
+
+        assertEquals(joueur3, getVilleParNom("Paris").getProprietaire());
+        assertEquals(joueur3, getVilleParNom("Madrid").getProprietaire());
+        assertEquals(joueur3, getVilleParNom("Amsterdam").getProprietaire());
+        assertTrue(TestUtils.contientExactement(
+                joueur3.getCartesWagon(),
+                CouleurWagon.VERT, CouleurWagon.ROUGE, CouleurWagon.ORANGE));
+        assertTrue(TestUtils.contientExactement(
+                jeu.getDefausseCartesWagon(),
+                CouleurWagon.ROUGE, CouleurWagon.BLEU, CouleurWagon.BLEU, CouleurWagon.ORANGE, CouleurWagon.ORANGE, CouleurWagon.ORANGE));
+        assertEquals(0, joueur3.getNbGares());
+    }
+
 }
