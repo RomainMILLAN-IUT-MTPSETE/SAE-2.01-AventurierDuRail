@@ -468,7 +468,7 @@ public class Joueur {
                                         break;
                                     }
                                 }
-                            }while(this.getNbWagonByCoul(choixCWCarte1) < 2);
+                            }while(this.getNbWagonByCoul(choixCWCarte1) + this.getNbWagonByCoul(CouleurWagon.LOCOMOTIVE) < 2);
 
                             for(int j=0; j<this.cartesWagon.size(); j++){
                                 if(this.cartesWagon.get(j).toString().equalsIgnoreCase(choixCarte1)){
@@ -568,7 +568,7 @@ public class Joueur {
                                         break;
                                     }
                                 }
-                            }while(this.getNbWagonByCoul(choixCWCarte1) < 3);
+                            }while(this.getNbWagonByCoul(choixCWCarte1) + this.getNbWagonByCoul(CouleurWagon.LOCOMOTIVE) < 3);
 
                             for(int j=0; j<this.cartesWagon.size(); j++){
                                 if(this.cartesWagon.get(j).toString().equalsIgnoreCase(choixCarte1)){
@@ -702,9 +702,9 @@ public class Joueur {
                     if(this.cartesWagon.size() >= routeChoisi.getLongueur()){
 
                         if(routeChoisi.estFerry() == true){
-
+                            //FERRY
                         }else if(routeChoisi.estTunnel() == true){
-
+                            //TUNNEL
                         }else {
                             //ROUTE NORMALE
                             ArrayList<String> buttonStringWagonListWagonPlayer = new ArrayList<>();
@@ -801,9 +801,9 @@ public class Joueur {
                     int nbLocoAndColorCardWagon = this.getNbWagonByCoul(CouleurWagon.LOCOMOTIVE) + this.getNbWagonByCoul(routeChoisi.getCouleur());
                     if(nbLocoAndColorCardWagon >= routeChoisi.getLongueur()){
                         if(routeChoisi.estFerry() == true){
-
+                            //FERRY
                         }else if(routeChoisi.estTunnel() == true){
-
+                            //TUNEL
                         }else {
                             //ROUTE NORMALE
                             int i = 0;
@@ -972,7 +972,7 @@ public class Joueur {
         deuxiemeChoixAL.addAll(wagonVisibleString);
         deuxiemeChoixAL.add(CouleurWagon.GRIS.toString().toUpperCase());
         String deuxiemeChoixCarteWagon = this.choisir(
-                "Choissisez l'autre carte Wagon.", // instruction
+                "Choissisez vogtre autre carte Wagon.", // instruction
                 deuxiemeChoixAL, // choix (hors boutons, ici aucun)
                 new ArrayList<>(),
                 true);
