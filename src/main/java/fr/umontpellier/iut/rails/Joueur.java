@@ -701,7 +701,7 @@ public class Joueur {
                 //FERRY
                 routeChoisi = (Ferry) routeChoisi;
 
-                if(this.nbWagonMemeCouleurMax() < ((Ferry) routeChoisi).getNbLocomotives()){
+                if(this.nbWagonMemeCouleurMax() + this.getNbWagonByCoul(CouleurWagon.LOCOMOTIVE) < ((Ferry) routeChoisi).getLongueur() && this.getNbWagonByCoul(CouleurWagon.LOCOMOTIVE) < ((Ferry) routeChoisi).getNbLocomotives()){
                     this.jouerTour();
                 }else {
                     int nbLocoTotChoseByPlayer = 0;
@@ -715,6 +715,7 @@ public class Joueur {
                         CouleurWagon colorWagonChoseToSetRoad = null;
                         int nbCardToSetRoad = 0;
                         do{
+                            nbCardToSetRoad = 0;
                             String choisirLaPremierCarteWagonAPoser = this.choisir(
                                     "Choissisez la 1er carte wagon.", // instruction
                                     new ArrayList<>(), // choix (hors boutons, ici aucun)
@@ -723,6 +724,10 @@ public class Joueur {
 
                             if(choisirLaPremierCarteWagonAPoser.equalsIgnoreCase("")){
                                 this.jouerTour();
+                                for(int i=0; i<this.cartesWagonPosees.size(); i++){
+                                    this.cartesWagon.add(this.cartesWagonPosees.get(i));
+                                }
+                                this.cartesWagonPosees.clear();
                             }else{
                                 for(CouleurWagon cw : this.cartesWagon){
                                     if(cw.toString().equalsIgnoreCase(choisirLaPremierCarteWagonAPoser)){
@@ -759,6 +764,14 @@ public class Joueur {
                                         buttonStringWagonListWagonPlayer,
                                         true);//Le joueur ne peut pas passer.
 
+                                if(choixWagonToDefausseToCreateRoad.equalsIgnoreCase("")){
+                                    this.jouerTour();
+                                    for(int j=0; j<this.cartesWagonPosees.size(); j++){
+                                        this.cartesWagon.add(this.cartesWagonPosees.get(j));
+                                    }
+                                    this.cartesWagon.clear();
+                                }
+
                                 if(choixWagonToDefausseToCreateRoad.equalsIgnoreCase(CouleurWagon.LOCOMOTIVE.toString()) || choixWagonToDefausseToCreateRoad.equalsIgnoreCase(colorWagonChoseToSetRoad.toString())){
                                     whileCheck = true;
                                 }
@@ -788,6 +801,13 @@ public class Joueur {
                             if(cw == CouleurWagon.LOCOMOTIVE){
                                 nbLocoTotChoseByPlayer++;
                             }
+                        }
+
+                        if(nbLocoTotChoseByPlayer<((Ferry) routeChoisi).getNbLocomotives()){
+                            for(int j=0; j<this.cartesWagonPosees.size(); j++){
+                                this.cartesWagon.add(this.cartesWagonPosees.get(j));
+                            }
+                            this.cartesWagonPosees.clear();
                         }
                     }while(nbLocoTotChoseByPlayer<((Ferry) routeChoisi).getNbLocomotives());
 
@@ -1096,7 +1116,10 @@ public class Joueur {
             CouleurWagon selectCardNotVisible = this.jeu.piocherCarteWagon();
 
             while(selectCardNotVisible.toString().equalsIgnoreCase(CouleurWagon.LOCOMOTIVE.toString())){
-                this.jeu.defausserCarteWagon(selectCardNotVisible);
+                //this.jeu.defausserCarteWagon(selectCardNotVisible);
+                int nombreAuHasardPourRemettreDansLeJeu = (int) (Math.random() * (this.jeu.getPileCartesWagon().size() - 1)) + 1;
+                this.jeu.getPileCartesWagon().add(nombreAuHasardPourRemettreDansLeJeu, selectCardNotVisible);
+                this.jeu.getPileCartesWagon().remove(0);
                 selectCardNotVisible = this.jeu.piocherCarteWagon();
             }
 
