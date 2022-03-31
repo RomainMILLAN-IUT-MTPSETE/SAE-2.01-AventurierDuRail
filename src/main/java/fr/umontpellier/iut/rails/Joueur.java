@@ -707,7 +707,6 @@ public class Joueur {
                 if(routeChoisi.getProprietaire() != null){
                     this.jouerTour();
                 }
-                this.nbWagons = 4;
                 if(routeChoisi.estFerry() == true){
                     //FERRY
                     routeChoisi = (Ferry) routeChoisi;
