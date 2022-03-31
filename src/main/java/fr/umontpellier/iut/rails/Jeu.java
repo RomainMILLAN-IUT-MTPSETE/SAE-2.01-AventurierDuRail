@@ -304,7 +304,7 @@ public class Jeu implements Runnable {
     }
 
     /**
-     * Retire une carte wagon de la pile des cartes wagon visibles.
+      * Retire une carte wagon de la pile des cartes wagon visibles.
      * Si une carte a été retirée, la pile de cartes wagons visibles est recomplétée
      * (remise à 5, éventuellement remélangée si 3 locomotives visibles)
      */
@@ -469,24 +469,33 @@ public class Jeu implements Runnable {
      */
     public void resetCarteWagonVisible(){
         int carteWagonVisibleSizeFirst = this.cartesWagonVisibles.size();
+        boolean canFillAll = true;
         if(this.cartesWagonVisibles.size() < 5){
             for(int i=0; i<5-carteWagonVisibleSizeFirst; i++){
                 CouleurWagon select = this.piocherCarteWagon();
+                if(select == null){
+                    canFillAll = false;
+                }
                 this.cartesWagonVisibles.add(select);
             }
         }
 
-        int nbrCarteLoco = 0;
-        for(int i=0; i<this.cartesWagonVisibles.size(); i++){
-            if(this.cartesWagonVisibles.get(i).equals(CouleurWagon.LOCOMOTIVE)){
-                nbrCarteLoco++;
+        if(canFillAll == true && !this.cartesWagonVisibles.isEmpty()){
+            int nbrCarteLoco = 0;
+            for(int i=0; i<this.cartesWagonVisibles.size(); i++){
+                if(this.cartesWagonVisibles.get(i).equals(CouleurWagon.LOCOMOTIVE)){
+                    nbrCarteLoco++;
+                }
             }
-        }
 
-        if(nbrCarteLoco >= 3){
-            this.resetAllCarteWagonVisible();
+            if(nbrCarteLoco >= 3){
+                this.resetAllCarteWagonVisible();
+            }else {
+                log("Remise de " + (5-carteWagonVisibleSizeFirst) + " cartes en carte <strong>visibles</strong>.");
+            }
         }else {
-            log("Remise de " + (5-carteWagonVisibleSizeFirst) + " cartes en carte <strong>visibles</strong>.");
+            this.resetAllCarteWagonVisible();
+
         }
     }
 
@@ -500,9 +509,18 @@ public class Jeu implements Runnable {
             this.cartesWagonVisibles.remove(0);
         }
 
+        boolean fillAll = true;
         for(int i=0; i<5; i++){
             CouleurWagon select = piocherCarteWagon();
-            this.cartesWagonVisibles.add(select);
+            if(select != null){
+                this.cartesWagonVisibles.add(select);
+            }else {
+                fillAll = false;
+            }
+        }
+
+        if(this.pileCartesWagon.isEmpty()){
+            fillAll = false;
         }
 
         int nbrCarteLoco = 0;
@@ -512,7 +530,7 @@ public class Jeu implements Runnable {
             }
         }
 
-        if(nbrCarteLoco >= 3){
+        if(nbrCarteLoco >= 3 && fillAll == true){
             this.resetAllCarteWagonVisible();
         }else {
             log("Reset de <strong>TOUTES</strong> les cartes wagon visibles.");

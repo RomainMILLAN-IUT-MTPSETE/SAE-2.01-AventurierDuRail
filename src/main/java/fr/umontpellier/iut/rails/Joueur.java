@@ -384,10 +384,16 @@ public class Joueur {
                 }
             }else {
                 //1er Carte NON VISIBLE
-                CouleurWagon selectCardNotVisible = this.jeu.piocherCarteWagon();
-                this.cartesWagon.add(selectCardNotVisible);
+                if(this.jeu.getPileCartesWagon().isEmpty()){
+                    this.jeu.log("Impossible de piocher une carte wagon non visible.");
+                    this.jouerTour();
+                }else {
+                    CouleurWagon selectCardNotVisible = this.jeu.piocherCarteWagon();
+                    this.cartesWagon.add(selectCardNotVisible);
 
-                this.secondTourDeSelectionCarteWagon(wagonVisibleString, wagonVisible);
+                    this.secondTourDeSelectionCarteWagon(wagonVisibleString, wagonVisible);
+                }
+
             }
 
         }else if(villesSelect.contains(choix)){
@@ -1322,17 +1328,24 @@ public class Joueur {
             }
         }else if(deuxiemeChoixCarteWagon.equalsIgnoreCase(CouleurWagon.GRIS.toString())){
             //2eme carte wagon NON VISIBLE
-            CouleurWagon selectCardNotVisible = this.jeu.piocherCarteWagon();
 
-            while(selectCardNotVisible.toString().equalsIgnoreCase(CouleurWagon.LOCOMOTIVE.toString())){
-                //this.jeu.defausserCarteWagon(selectCardNotVisible);
-                int nombreAuHasardPourRemettreDansLeJeu = (int) (Math.random() * (this.jeu.getPileCartesWagon().size() - 1)) + 1;
-                this.jeu.getPileCartesWagon().add(nombreAuHasardPourRemettreDansLeJeu, selectCardNotVisible);
-                this.jeu.getPileCartesWagon().remove(0);
-                selectCardNotVisible = this.jeu.piocherCarteWagon();
+            if(this.jeu.getPileCartesWagon().isEmpty()){
+                this.jeu.log("Impossible, de piocher une carte wagon non visible, car aucune carte dans la pile.");
+                this.jouerTour();
+            }else {
+                CouleurWagon selectCardNotVisible = this.jeu.piocherCarteWagon();
+                while(selectCardNotVisible.toString().equalsIgnoreCase(CouleurWagon.LOCOMOTIVE.toString())){
+                    //this.jeu.defausserCarteWagon(selectCardNotVisible);
+                    int nombreAuHasardPourRemettreDansLeJeu = (int) (Math.random() * (this.jeu.getPileCartesWagon().size() - 1)) + 1;
+                    this.jeu.getPileCartesWagon().add(nombreAuHasardPourRemettreDansLeJeu, selectCardNotVisible);
+                    this.jeu.getPileCartesWagon().remove(0);
+                    selectCardNotVisible = this.jeu.piocherCarteWagon();
+                }
+
+                this.cartesWagon.add(selectCardNotVisible);
             }
 
-            this.cartesWagon.add(selectCardNotVisible);
+
         }
     }
 }
