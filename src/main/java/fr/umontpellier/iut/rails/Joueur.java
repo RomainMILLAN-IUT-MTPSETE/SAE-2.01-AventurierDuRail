@@ -707,10 +707,10 @@ public class Joueur {
                 if(routeChoisi.getProprietaire() != null){
                     this.jouerTour();
                 }
+                this.nbWagons = 4;
                 if(routeChoisi.estFerry() == true){
                     //FERRY
                     routeChoisi = (Ferry) routeChoisi;
-
                     if(this.nbWagonMemeCouleurMax() + this.getNbWagonByCoul(CouleurWagon.LOCOMOTIVE) < ((Ferry) routeChoisi).getLongueur() && this.getNbWagonByCoul(CouleurWagon.LOCOMOTIVE) < ((Ferry) routeChoisi).getNbLocomotives()){
                         this.jouerTour();
                     }else {
@@ -1347,5 +1347,9 @@ public class Joueur {
 
 
         }
+    }
+
+    public int getScore() {
+        return score;
     }
 }

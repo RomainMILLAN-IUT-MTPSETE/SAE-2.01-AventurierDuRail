@@ -211,23 +211,39 @@ public class Jeu implements Runnable {
         int dernierTourDujeu = 0;
         while(arretDuJeu == false || dernierTourDujeu < joueurs.size()){
             for(int i=0; i<joueurs.size(); i++){
-                log("Au tour de <strong>" + joueurs.get(i).getNom() + "</strong>");
-                this.joueurCourant = this.joueurs.get(i);
+                if(dernierTourDujeu < joueurs.size()){
+                    log("Au tour de <strong>" + joueurs.get(i).getNom() + "</strong>");
+                    this.joueurCourant = this.joueurs.get(i);
 
-                //Lancement du tour du joueur, voir sa suite dans Joueur.java
-                this.joueurCourant.jouerTour();
+                    //Lancement du tour du joueur, voir sa suite dans Joueur.java
+                    this.joueurCourant.jouerTour();
 
 
-                //Pour la fin du jeu.
-                if(arretDuJeu == true){
-                    dernierTourDujeu++;
-                }
-                //Si le joueur à moin de 3 wagon (0,1 ou 2), alors la fin du jeu commence.
-                if(joueurs.get(i).getNbWagons() < 3){
-                    arretDuJeu = true;
+                    //Pour la fin du jeu.
+                    if(arretDuJeu == true){
+                        dernierTourDujeu++;
+                    }
+                    //Si le joueur à moin de 3 wagon (0,1 ou 2), alors la fin du jeu commence.
+                    if(joueurs.get(i).getNbWagons() < 3){
+                        arretDuJeu = true;
+                    }
                 }
             }
         }
+
+        this.log("<strong>FIN DU JEU</strong>");
+        for(int i=0; i<5; i++){
+            System.out.println("\n");
+        }
+        System.out.println("FIN DU JEU");
+        Joueur gagnant = joueurs.get(0);
+        for(Joueur j : joueurs){
+            if(j.getScore() > gagnant.getScore()){
+                gagnant = j;
+            }
+        }
+        this.log("Le gagnant est: <strong>" + gagnant.getNom() + "</strong>, avec " + gagnant.getScore() + "points !");
+        System.out.println("Le gagnant est: " + gagnant.getNom() + ", avec " + gagnant.getScore() + "points !");
 
 
         /**
@@ -286,9 +302,10 @@ public class Jeu implements Runnable {
 
         if(cartesWagonVisibles.size()<5){
             cartesWagonVisibles.add(c);
+        }else {
+            defausseCartesWagon.add(c);
         }
 
-        defausseCartesWagon.add(c);
     }
 
     /**
