@@ -112,6 +112,12 @@ public class Jeu implements Runnable {
 
         Collections.shuffle(this.pileCartesWagon);
 
+        for(int i=0; i<this.joueurs.size(); i++){
+            for(int j=0; j<4; j++){
+                this.joueurs.get(i).getCartesWagon().add(this.piocherCarteWagon());
+            }
+        }
+
         this.resetCarteWagonVisible();
     }
 

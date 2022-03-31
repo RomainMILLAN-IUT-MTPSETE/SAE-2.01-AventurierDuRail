@@ -1298,10 +1298,20 @@ public class Joueur {
     public void secondTourDeSelectionCarteWagon(ArrayList<String> wagonVisibleString, ArrayList<CouleurWagon> wagonVisible){
         //2EME CHOIX
         ArrayList<String> deuxiemeChoixAL = new ArrayList<>();
+        for(int i=0; i<wagonVisibleString.size(); i++){
+            wagonVisibleString.remove(0);
+        }
+        for(int i=0; i<wagonVisible.size(); i++){
+            wagonVisible.remove(0);
+        }
+        for(CouleurWagon cw : this.jeu.getCartesWagonVisibles()){
+            wagonVisible.add(cw);
+            wagonVisibleString.add(cw.toString().toUpperCase());
+        }
         deuxiemeChoixAL.addAll(wagonVisibleString);
         deuxiemeChoixAL.add(CouleurWagon.GRIS.toString().toUpperCase());
         String deuxiemeChoixCarteWagon = this.choisir(
-                "Choissisez vogtre autre carte Wagon.", // instruction
+                "Choissisez votre autre carte Wagon.", // instruction
                 deuxiemeChoixAL, // choix (hors boutons, ici aucun)
                 new ArrayList<>(),
                 true);
