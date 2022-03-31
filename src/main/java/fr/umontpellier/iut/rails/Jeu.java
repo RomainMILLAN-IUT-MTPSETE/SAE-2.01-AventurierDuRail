@@ -89,7 +89,31 @@ public class Jeu implements Runnable {
         // création des villes et des routes
         Plateau plateau = Plateau.makePlateauEurope();
         villes = plateau.getVilles();
-        routes = plateau.getRoutes();
+
+        if(nomJoueurs.length < 3){
+            ArrayList<Route> routeArrayList= new ArrayList<>();
+            for(int i=0; i<plateau.getRoutes().size(); i++){
+                if(routeArrayList.size() < 1){
+                    routeArrayList.add(plateau.getRoutes().get(i));
+                }
+                boolean findInArray = false;
+                int k = 0;
+                while(k < routeArrayList.size() && findInArray == false){
+                    if(routeArrayList.get(k).getVille1().getNom().equalsIgnoreCase(plateau.getRoutes().get(i).getVille1().getNom()) && routeArrayList.get(k).getVille2().getNom().equalsIgnoreCase(plateau.getRoutes().get(i).getVille2().getNom())){
+                        findInArray = true;
+                    }
+                    k++;
+                }
+
+                if(findInArray == false){
+                    routeArrayList.add(plateau.getRoutes().get(i));
+                }
+            }
+            routes = routeArrayList;
+        }else {
+            routes = plateau.getRoutes();
+        }
+
         //PERSO
         this.longDestinationList = Destination.makeDestinationsLonguesEurope();
         this.pileDestinations = Destination.makeDestinationsEurope();
