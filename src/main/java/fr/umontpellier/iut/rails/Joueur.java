@@ -707,122 +707,93 @@ public class Joueur {
                 if(this.nbWagonMemeCouleurMax() + this.getNbWagonByCoul(CouleurWagon.LOCOMOTIVE) < ((Ferry) routeChoisi).getLongueur() && this.getNbWagonByCoul(CouleurWagon.LOCOMOTIVE) < ((Ferry) routeChoisi).getNbLocomotives()){
                     this.jouerTour();
                 }else {
-                    int nbLocoTotChoseByPlayer = 0;
-                    do {
-                        nbLocoTotChoseByPlayer = 0;
-                        ArrayList<String> buttonStringWagonListWagonPlayer = new ArrayList<>();
-                        for(int j=0; j<this.cartesWagon.size(); j++){
-                            buttonStringWagonListWagonPlayer.add(this.cartesWagon.get(j).toString().toUpperCase());
+                    int nbLocoChosePlayer = 0;
+                    do{
+                        for(int i=0; i<this.cartesWagonPosees.size(); i++){
+                            this.cartesWagon.add(this.cartesWagonPosees.get(i));
                         }
-
-                        CouleurWagon colorWagonChoseToSetRoad = null;
-                        int nbCardToSetRoad = 0;
+                        this.cartesWagonPosees.clear();
+                        nbLocoChosePlayer = 0;
+                        ArrayList<String> buttonWagonVisibleString = new ArrayList<>();
+                        String colorToFillAll = "";
                         do{
-                            nbCardToSetRoad = 0;
-                            String choisirLaPremierCarteWagonAPoser = this.choisir(
-                                    "Choissisez la 1er carte wagon.", // instruction
-                                    new ArrayList<>(), // choix (hors boutons, ici aucun)
-                                    buttonStringWagonListWagonPlayer,
-                                    true);//Le joueur ne peut pas passer.
-
-                            if(choisirLaPremierCarteWagonAPoser.equalsIgnoreCase("")){
-                                this.jouerTour();
-                                for(int i=0; i<this.cartesWagonPosees.size(); i++){
-                                    this.cartesWagon.add(this.cartesWagonPosees.get(i));
+                            buttonWagonVisibleString.clear();
+                            String choixPlayer = "";
+                            boolean whileCheck = true;
+                            do {
+                                buttonWagonVisibleString.clear();
+                                for(int i=0; i<this.cartesWagon.size(); i++){
+                                    buttonWagonVisibleString.add(this.cartesWagon.get(i).toString().toUpperCase());
                                 }
-                                this.cartesWagonPosees.clear();
-                            }else{
-                                for(CouleurWagon cw : this.cartesWagon){
-                                    if(cw.toString().equalsIgnoreCase(choisirLaPremierCarteWagonAPoser)){
-                                        colorWagonChoseToSetRoad = cw;
-                                        break;
-                                    }
-                                }
-                            }
-                            nbCardToSetRoad = this.getNbWagonByCoul(colorWagonChoseToSetRoad) + this.getNbWagonByCoul(CouleurWagon.LOCOMOTIVE);
-                        }while(nbCardToSetRoad < routeChoisi.getLongueur());
-
-                        //On supprime la carte de ces carte de la main du joueur & on la pose.
-                        for(int j=0; j<this.cartesWagon.size(); j++){
-                            if(this.cartesWagon.get(j).equals(colorWagonChoseToSetRoad)){
-                                this.cartesWagonPosees.add(this.cartesWagon.get(j));
-                                this.cartesWagon.remove(j);
-                                break;
-                            }
-                        }
-
-                        int i = 1;
-                        while (i<routeChoisi.getLongueur()){
-                            buttonStringWagonListWagonPlayer.clear();
-                            for(int j=0; j<this.cartesWagon.size(); j++){
-                                buttonStringWagonListWagonPlayer.add(this.cartesWagon.get(j).toString().toUpperCase());
-                            }
-                            String choixWagonToDefausseToCreateRoad = "";
-                            boolean whileCheck = false;
-                            do{
-                                whileCheck = false;
-                                choixWagonToDefausseToCreateRoad = this.choisir(
-                                        "Choissisez la " + (i+1) + "eme carte wagon.", // instruction
+                                choixPlayer = this.choisir(
+                                        "Choissisez vos cartes.", // instruction
                                         new ArrayList<>(), // choix (hors boutons, ici aucun)
-                                        buttonStringWagonListWagonPlayer,
+                                        buttonWagonVisibleString,
                                         true);//Le joueur ne peut pas passer.
 
-                                if(choixWagonToDefausseToCreateRoad.equalsIgnoreCase("")){
+                                if (choixPlayer.equalsIgnoreCase("")){
+                                    for(int i=0; i<this.cartesWagonPosees.size(); i++){
+                                        this.cartesWagon.add(this.cartesWagonPosees.get(i));
+                                    }
+                                    this.cartesWagonPosees.clear();
                                     this.jouerTour();
-                                    for(int j=0; j<this.cartesWagonPosees.size(); j++){
-                                        this.cartesWagon.add(this.cartesWagonPosees.get(j));
+                                }else {
+                                    if(!choixPlayer.equalsIgnoreCase(CouleurWagon.LOCOMOTIVE.toString())){
+                                        if(colorToFillAll.equalsIgnoreCase("")){
+                                            for(int i=0; i<this.cartesWagon.size(); i++){
+                                                if(this.cartesWagon.get(i).toString().equalsIgnoreCase(choixPlayer)){
+                                                    colorToFillAll = this.cartesWagon.get(i).toString().toUpperCase();
+                                                    break;
+                                                }
+                                            }
+                                        }
                                     }
-                                    this.cartesWagon.clear();
-                                }
 
-                                if(choixWagonToDefausseToCreateRoad.equalsIgnoreCase(CouleurWagon.LOCOMOTIVE.toString()) || choixWagonToDefausseToCreateRoad.equalsIgnoreCase(colorWagonChoseToSetRoad.toString())){
-                                    whileCheck = true;
-                                }
-                            }while(whileCheck == false);
-
-                            if(choixWagonToDefausseToCreateRoad.equalsIgnoreCase("")){
-                                for(int j=0; j<this.cartesWagonPosees.size(); j++){
-                                    this.cartesWagon.add(this.cartesWagonPosees.get(j));
-                                }
-                                this.cartesWagonPosees.clear();
-                                this.jouerTour();
-                            }else {
-                                //On supprime la carte de ces carte de la main du joueur & on la pose.
-                                for(int j=0; j<this.cartesWagon.size(); j++){
-                                    if(this.cartesWagon.get(j).toString().equalsIgnoreCase(choixWagonToDefausseToCreateRoad)){
-                                        this.cartesWagonPosees.add(this.cartesWagon.get(j));
-                                        this.cartesWagon.remove(j);
-                                        break;
+                                    if(choixPlayer.equalsIgnoreCase(CouleurWagon.LOCOMOTIVE.toString().toUpperCase()) || choixPlayer.equalsIgnoreCase(colorToFillAll)){
+                                        whileCheck = false;
                                     }
+                                }
+                            }while(whileCheck == true);
+
+                            for(int i=0; i<this.cartesWagon.size(); i++){
+                                if(this.cartesWagon.get(i).toString().equalsIgnoreCase(choixPlayer)){
+                                    this.cartesWagonPosees.add(this.cartesWagon.get(i));
+                                    this.cartesWagon.remove(i);
+                                    break;
                                 }
                             }
 
-                            i++;
-                        }
 
+                        }while(this.cartesWagonPosees.size() < routeChoisi.getLongueur());
                         for(CouleurWagon cw : this.cartesWagonPosees){
-                            if(cw == CouleurWagon.LOCOMOTIVE){
-                                nbLocoTotChoseByPlayer++;
+                            if(cw.equals(CouleurWagon.LOCOMOTIVE)){
+                                nbLocoChosePlayer++;
                             }
                         }
+                    }while(nbLocoChosePlayer < ((Ferry) routeChoisi).getNbLocomotives());
 
-                        if(nbLocoTotChoseByPlayer<((Ferry) routeChoisi).getNbLocomotives()){
-                            for(int j=0; j<this.cartesWagonPosees.size(); j++){
-                                this.cartesWagon.add(this.cartesWagonPosees.get(j));
-                            }
-                            this.cartesWagonPosees.clear();
+                    nbLocoChosePlayer = 0;
+                    for(CouleurWagon cw : this.cartesWagonPosees){
+                        if(cw.equals(CouleurWagon.LOCOMOTIVE)){
+                            nbLocoChosePlayer++;
                         }
-                    }while(nbLocoTotChoseByPlayer<((Ferry) routeChoisi).getNbLocomotives());
+                    }
+                    if(nbLocoChosePlayer<((Ferry) routeChoisi).getNbLocomotives()){
+                        for(int j=0; j<this.cartesWagonPosees.size(); j++){
+                            this.cartesWagon.add(this.cartesWagonPosees.get(j));
+                        }
+                        this.cartesWagonPosees.clear();
+                        this.jouerTour();
+                    }
 
                     routeChoisi.setProprietaire(this);
+
                     for(int j=0; j<this.cartesWagonPosees.size(); j++){
                         this.jeu.defausserCarteWagon(this.cartesWagonPosees.get(j));
                     }
-
                     this.cartesWagonPosees.clear();
                     this.addScoreEnFonctionDeRoute(routeChoisi);
                 }
-
             }else if(routeChoisi.estTunnel() == true){
                 //TUNEL
                 routeChoisi = (Tunnel) routeChoisi;
