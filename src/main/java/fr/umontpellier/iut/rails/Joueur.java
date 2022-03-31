@@ -430,6 +430,7 @@ public class Joueur {
                         this.jeu.defausserCarteWagon(this.cartesWagonPosees.get(0));
                         this.cartesWagonPosees.remove(0);
                         this.nbGares--;
+                        this.score += 4;
 
                     }else {
                         log(this.nom + " il est <strong>impossible</strong> pour vous de contruire une gare, vous n'avez pas assez de cartes wagons de même couleur");
@@ -521,6 +522,7 @@ public class Joueur {
                         }
 
                         villeChoisis.setProprietaire(this);
+                        this.score += 4;
                         int nbDefausse = this.cartesWagonPosees.size();
                         for(int i=0; i<nbDefausse; i++){
                             this.jeu.defausserCarteWagon(this.cartesWagonPosees.get(0));
@@ -664,6 +666,7 @@ public class Joueur {
                         }
 
                         villeChoisis.setProprietaire(this);
+                        this.score += 4;
                         int nbDefausse = this.cartesWagonPosees.size();
                         for(int i=0; i<nbDefausse; i++){
                             this.jeu.defausserCarteWagon(this.cartesWagonPosees.get(0));
