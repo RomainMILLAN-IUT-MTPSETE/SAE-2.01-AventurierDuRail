@@ -976,44 +976,65 @@ public class Joueur {
                             this.jeu.defausserCarteWagon(c);
                         }
 
-                        while(this.cartesWagonPosees.size() < (routeChoisi.getLongueur() + nbCardToAdd)) {
-                            String choixPlayer = "";
-                            do{
-                                buttonStringCartWagonPlayer.clear();
-                                for(int i=0; i<this.cartesWagon.size(); i++){
-                                    buttonStringCartWagonPlayer.add(this.cartesWagon.get(i).toString().toUpperCase());
-                                }
-                                choixPlayer = this.choisir(
-                                        "Ajouter encore des cartes.", // instruction
-                                        new ArrayList<>(), // choix (hors boutons, ici aucun)
-                                        buttonStringCartWagonPlayer,
-                                        true);//Le joueur ne peut pas passer.
-
-                                if (choixPlayer.equalsIgnoreCase("")){
-                                    for(int i=0; i<this.cartesWagonPosees.size(); i++){
-                                        this.cartesWagon.add(this.cartesWagonPosees.get(i));
+                        if((this.getNbWagonByCoul(routeChoisi.getCouleur()) + this.getNbWagonByCoul(CouleurWagon.LOCOMOTIVE)) < nbCardToAdd){
+                            for(int i=0; i<this.cartesWagonPosees.size(); i++){
+                                this.cartesWagon.add(this.cartesWagonPosees.get(i));
+                            }
+                            this.cartesWagonPosees.clear();
+                        }else {
+                            boolean whileCheckWhile = true;
+                            boolean pass = false;
+                            while(this.cartesWagonPosees.size() < (routeChoisi.getLongueur() + nbCardToAdd) && pass == false) {
+                                String choixPlayer = "";
+                                do{
+                                    buttonStringCartWagonPlayer.clear();
+                                    for(int i=0; i<this.cartesWagon.size(); i++){
+                                        buttonStringCartWagonPlayer.add(this.cartesWagon.get(i).toString().toUpperCase());
                                     }
-                                    this.cartesWagonPosees.clear();
-                                    this.jouerTour();
-                                }
-                            }while(!choixPlayer.equalsIgnoreCase(routeChoisi.getCouleur().toString()) && !choixPlayer.equalsIgnoreCase(CouleurWagon.LOCOMOTIVE.toString()));
+                                    choixPlayer = this.choisir(
+                                            "Ajouter encore des cartes.", // instruction
+                                            new ArrayList<>(), // choix (hors boutons, ici aucun)
+                                            buttonStringCartWagonPlayer,
+                                            true);//Le joueur ne peut pas passer.
 
-                            for(int i=0; i<this.cartesWagon.size(); i++){
-                                if(this.cartesWagon.get(i).toString().equalsIgnoreCase(choixPlayer)){
-                                    this.cartesWagonPosees.add(this.cartesWagon.get(i));
-                                    this.cartesWagon.remove(i);
-                                    break;
+                                    if (choixPlayer.equalsIgnoreCase("")){
+                                        for(int i=0; i<this.cartesWagonPosees.size(); i++){
+                                            this.cartesWagon.add(this.cartesWagonPosees.get(i));
+                                        }
+                                        this.cartesWagonPosees.clear();
+                                        whileCheckWhile = false;
+                                        pass = true;
+                                        //this.jouerTour();
+                                    }
+
+                                    if(whileCheckWhile == true && pass == false){
+                                        if(choixPlayer.equalsIgnoreCase(routeChoisi.getCouleur().toString()) || choixPlayer.equalsIgnoreCase(CouleurWagon.LOCOMOTIVE.toString())){
+                                            whileCheckWhile = false;
+                                        }
+                                    }
+                                }while(whileCheckWhile == true);
+
+                                if(pass == false) {
+                                    for(int i=0; i<this.cartesWagon.size(); i++){
+                                        if(this.cartesWagon.get(i).toString().equalsIgnoreCase(choixPlayer)){
+                                            this.cartesWagonPosees.add(this.cartesWagon.get(i));
+                                            this.cartesWagon.remove(i);
+                                            break;
+                                        }
+                                    }
                                 }
                             }
-                        }
 
-                        routeChoisi.setProprietaire(this);
+                            if(pass == false){
+                                routeChoisi.setProprietaire(this);
 
-                        for(int j=0; j<this.cartesWagonPosees.size(); j++){
-                            this.jeu.defausserCarteWagon(this.cartesWagonPosees.get(j));
+                                for(int j=0; j<this.cartesWagonPosees.size(); j++){
+                                    this.jeu.defausserCarteWagon(this.cartesWagonPosees.get(j));
+                                }
+                                this.cartesWagonPosees.clear();
+                                this.addScoreEnFonctionDeRoute(routeChoisi);
+                            }
                         }
-                        this.cartesWagonPosees.clear();
-                        this.addScoreEnFonctionDeRoute(routeChoisi);
                     }
                 }
             }else {
