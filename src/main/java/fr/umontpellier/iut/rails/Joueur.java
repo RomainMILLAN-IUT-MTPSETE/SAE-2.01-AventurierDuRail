@@ -1204,9 +1204,11 @@ public class Joueur {
     public int getNbWagonByCoul(CouleurWagon coul){
         int res = 0;
 
-        for(int i=0; i<this.cartesWagon.size(); i++){
-            if(this.cartesWagon.get(i).toString().equalsIgnoreCase(coul.toString())){
-                res++;
+        if(coul != null){
+            for(int i=0; i<this.cartesWagon.size(); i++){
+                if(this.cartesWagon.get(i).toString().equalsIgnoreCase(coul.toString())){
+                    res++;
+                }
             }
         }
 
